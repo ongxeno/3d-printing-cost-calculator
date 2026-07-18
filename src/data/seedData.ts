@@ -124,5 +124,22 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Vision Encoder & Optical Sensor Array", replacement_cost_thb: 2990, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 10, periodic_maintenance_interval_hours: 100 },
       { id: generateId(), name: "AMS 2 Pro Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 }
     ]
+  },
+  "creality_ender3_s1": {
+    id: "creality_ender3_s1",
+    name: "Creality Ender-3 S1",
+    purchase_price_thb: 12000,
+    estimated_lifespan_hours: 5000,
+    base_power_draw_watts: 125,
+    supports_multi_color: false,
+    maintenance_components: [
+      { id: generateId(), name: "Standard Brass Nozzle (0.4mm)", replacement_lifespan_hours: 400, replacement_cost_thb: 150, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Sprite Extruder Heater Block & Thermistor Kit", replacement_lifespan_hours: 2500, replacement_cost_thb: 934, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Polytetrafluoroethylene (PTFE) Heatbreak Liner", replacement_lifespan_hours: 800, replacement_cost_thb: 100, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Sprite Extruder Drive Gears & Bearings", replacement_lifespan_hours: 2500, replacement_cost_thb: 1200, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Polyoxymethylene (POM) Wheels (Set of 13)", replacement_lifespan_hours: 2000, replacement_cost_thb: 450, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Gates Synchronous Timing Belts (X & Y Axes)", replacement_lifespan_hours: 2500, replacement_cost_thb: 350, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Polycarbonate (PC) Spring Steel Build Plate", replacement_lifespan_hours: 1000, replacement_cost_thb: 875, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
+    ]
   }
 };
