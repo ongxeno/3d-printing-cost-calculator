@@ -5,6 +5,9 @@ export interface JobMaterial {
   filamentId: string; // key from filamentPresets
   weight_g: number;
   role: string;
+  price_per_kg_thb: number;
+  power_draw_multiplier: number;
+  hardware_wear_multiplier: number;
 }
 
 export interface CalculatorState {
@@ -38,19 +41,15 @@ export const calculateTotalTime = (hours: number, mins: number) => {
 };
 
 export const calculateMaterialCost = (
-  jobMaterials: JobMaterial[],
-  filamentsData: Record<string, any>
+  jobMaterials: JobMaterial[]
 ) => {
   return jobMaterials.reduce((total, mat) => {
-    const filament = filamentsData[mat.filamentId];
-    if (!filament) return total;
-    return total + (filament.price_per_kg_thb / 1000) * (mat.weight_g || 0);
+    return total + (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
   }, 0);
 };
 
 export const getActiveMultipliers = (
-  jobMaterials: JobMaterial[],
-  filamentsData: Record<string, any>
+  jobMaterials: JobMaterial[]
 ) => {
   if (jobMaterials.length === 0) {
     return { power: 1, wear: 1 };
@@ -60,11 +59,8 @@ export const getActiveMultipliers = (
   let maxWear = 1;
 
   jobMaterials.forEach(mat => {
-    const filament = filamentsData[mat.filamentId];
-    if (filament) {
-      if (filament.power_draw_multiplier > maxPower) maxPower = filament.power_draw_multiplier;
-      if (filament.hardware_wear_multiplier > maxWear) maxWear = filament.hardware_wear_multiplier;
-    }
+    if (mat.power_draw_multiplier > maxPower) maxPower = mat.power_draw_multiplier;
+    if (mat.hardware_wear_multiplier > maxWear) maxWear = mat.hardware_wear_multiplier;
   });
 
   return { power: maxPower, wear: maxWear };

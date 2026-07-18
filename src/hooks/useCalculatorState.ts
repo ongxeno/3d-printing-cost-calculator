@@ -61,20 +61,38 @@ export const useCalculatorState = () => {
 
   // Job Material CRUD
   const addJobMaterial = () => {
+    const preset = filamentPresets['mat_pla'];
     const newMaterial: JobMaterial = {
       id: generateId(),
       filamentId: 'mat_pla',
       weight_g: 0,
-      role: 'Part'
+      role: 'Part',
+      price_per_kg_thb: preset.price_per_kg_thb,
+      power_draw_multiplier: preset.power_draw_multiplier,
+      hardware_wear_multiplier: preset.hardware_wear_multiplier
     };
     setState(prev => ({ ...prev, jobMaterials: [...prev.jobMaterials, newMaterial] }));
   };
 
   const updateJobMaterial = (id: string, updates: Partial<JobMaterial>) => {
-    setState(prev => ({
-      ...prev,
-      jobMaterials: prev.jobMaterials.map(m => m.id === id ? { ...m, ...updates } : m)
-    }));
+    setState(prev => {
+      const jobMaterials = prev.jobMaterials.map(m => {
+        if (m.id === id) {
+          const updated = { ...m, ...updates };
+          if (updates.filamentId && updates.filamentId !== m.filamentId) {
+            const preset = filamentPresets[updates.filamentId];
+            if (preset) {
+              updated.price_per_kg_thb = preset.price_per_kg_thb;
+              updated.power_draw_multiplier = preset.power_draw_multiplier;
+              updated.hardware_wear_multiplier = preset.hardware_wear_multiplier;
+            }
+          }
+          return updated;
+        }
+        return m;
+      });
+      return { ...prev, jobMaterials };
+    });
   };
 
   const removeJobMaterial = (id: string) => {
@@ -114,8 +132,8 @@ export const useCalculatorState = () => {
   // Computed Values
   const computed = useMemo(() => {
     const totalTimeHours = calculateTotalTime(state.printTimeHours, state.printTimeMins);
-    const materialCost = calculateMaterialCost(state.jobMaterials, filamentPresets);
-    const multipliers = getActiveMultipliers(state.jobMaterials, filamentPresets);
+    const materialCost = calculateMaterialCost(state.jobMaterials);
+    const multipliers = getActiveMultipliers(state.jobMaterials);
     
     const energyCost = calculateEnergyCost(
       state.basePowerDraw,
@@ -156,11 +174,8 @@ export const useCalculatorState = () => {
     // Material breakdown by role (for Receipt)
     const materialsByRole: Record<string, number> = {};
     state.jobMaterials.forEach(mat => {
-      const filament = filamentPresets[mat.filamentId];
-      if (filament) {
-        const cost = (filament.price_per_kg_thb / 1000) * (mat.weight_g || 0);
-        materialsByRole[mat.role] = (materialsByRole[mat.role] || 0) + cost;
-      }
+      const cost = (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
+      materialsByRole[mat.role] = (materialsByRole[mat.role] || 0) + cost;
     });
 
     return {
