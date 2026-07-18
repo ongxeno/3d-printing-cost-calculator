@@ -96,7 +96,10 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Sprite Extruder Drive Gears & Bearings", replacement_lifespan_hours: 2500, replacement_cost_thb: 1200, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Polyoxymethylene (POM) Wheels (Set of 13)", replacement_lifespan_hours: 2000, replacement_cost_thb: 450, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Gates Synchronous Timing Belts (X & Y Axes)", replacement_lifespan_hours: 2500, replacement_cost_thb: 350, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Polycarbonate (PC) Spring Steel Build Plate", replacement_lifespan_hours: 1000, replacement_cost_thb: 875, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
+      { id: generateId(), name: "Polycarbonate (PC) Spring Steel Build Plate", replacement_lifespan_hours: 1000, replacement_cost_thb: 875, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Silicone Thermal Socks (3-pack)", replacement_lifespan_hours: 500, replacement_cost_thb: 175, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Liquid Glue / Glue Sticks", replacement_lifespan_hours: 1000, replacement_cost_thb: 350, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Z-Axis Lead Screw Lubrication Routine", replacement_lifespan_hours: 5000, replacement_cost_thb: 0, periodic_maintenance_cost_thb: 50, periodic_maintenance_interval_hours: 300 }
     ]
   },
   "bambu_x2d_combo": {
