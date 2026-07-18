@@ -105,20 +105,24 @@ export const printerProfiles: Record<string, PrinterProfile> = {
   "bambu_h2c_combo": {
     id: "bambu_h2c_combo",
     name: "Bambu Lab H2C Combo",
-    purchase_price_thb: 95000,
-    estimated_lifespan_hours: 12000,
+    purchase_price_thb: 97900,
+    estimated_lifespan_hours: 10000,
     base_power_draw_watts: 250,
     supports_multi_color: true,
     maintenance_components: [
-      { id: generateId(), name: "Vortek Hotend Modules (7-pack)", replacement_lifespan_hours: 2000, replacement_cost_thb: 3500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Toolhead Switching Mechanism", replacement_lifespan_hours: 3000, replacement_cost_thb: 2500, periodic_maintenance_cost_thb: 150, periodic_maintenance_interval_hours: 200 },
-      { id: generateId(), name: "CoreXY High-Speed Belts", replacement_lifespan_hours: 2500, replacement_cost_thb: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Carbon Fiber Linear Rails", replacement_lifespan_hours: 5000, replacement_cost_thb: 3800, periodic_maintenance_cost_thb: 200, periodic_maintenance_interval_hours: 300 },
-      { id: generateId(), name: "Heated Chamber Filter (HEPA/Carbon)", replacement_lifespan_hours: 500, replacement_cost_thb: 600, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Extruder Gear Assemblies", replacement_lifespan_hours: 2500, replacement_cost_thb: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Build Plates (High-Temp PEI)", replacement_lifespan_hours: 1500, replacement_cost_thb: 1600, periodic_maintenance_cost_thb: 200, periodic_maintenance_interval_hours: 100 },
-      { id: generateId(), name: "Filament Cutter Blades", replacement_lifespan_hours: 1000, replacement_cost_thb: 200, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "PTFE Tubing (Internal)", replacement_lifespan_hours: 1000, replacement_cost_thb: 250, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
+      { id: generateId(), name: "Vortek Hardened Steel Induction Hotend (0.4mm / 0.6mm / 0.8mm)", replacement_cost_thb: 1990, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "Vortek Stainless Steel Induction Hotend (0.2mm)", replacement_cost_thb: 1990, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "Fixed Left Standard Hotend (0.4mm Hardened Steel)", replacement_cost_thb: 1200, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 50, periodic_maintenance_interval_hours: 200 },
+      { id: generateId(), name: "Three-Stage Air Filtration Assembly (G3 / H12 HEPA / Activated Carbon)", replacement_cost_thb: 1400, replacement_lifespan_hours: 300, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "CoreXY Gantry Drive Belts (XY)", replacement_cost_thb: 740, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "Z-Axis Lead Screws and Linear Guide Rods", replacement_cost_thb: 2500, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 100, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "Bambu Textured PEI Build Plate (H2C Exclusive)", replacement_cost_thb: 2490, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 20, periodic_maintenance_interval_hours: 50 },
+      { id: generateId(), name: "DynaSense Hardened Steel Extruder Gear Assembly", replacement_cost_thb: 1200, replacement_lifespan_hours: 3000, periodic_maintenance_cost_thb: 50, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "Replacement Filament Cutter Blades (3-Pack)", replacement_cost_thb: 210, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Nozzle Wiper and Wiping Pad Assembly", replacement_cost_thb: 400, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "Induction Hotend Rack & Magnetic Latch Mechanism", replacement_cost_thb: 4500, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 500 },
+      { id: generateId(), name: "Vision Encoder & Optical Sensor Array", replacement_cost_thb: 2990, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 10, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "AMS 2 Pro Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 }
     ]
   }
 };
