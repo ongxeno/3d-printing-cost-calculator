@@ -146,6 +146,26 @@ export const useCalculatorState = () => {
     }));
   };
 
+  const resetState = () => {
+    localStorage.removeItem('3dprint_calculator_state');
+    setState({
+      printerId: initialPrinter.id,
+      printTimeHours: 0,
+      printTimeMins: 0,
+      jobMaterials: [],
+      elecRate: 5.0,
+      laborRate: 150,
+      prepTime: 5,
+      setupTime: 5,
+      postTime: 5,
+      failureRate: 5,
+      printerPrice: initialPrinter.purchase_price_thb,
+      printerLifespan: initialPrinter.estimated_lifespan_hours,
+      basePowerDraw: initialPrinter.base_power_draw_watts,
+      maintenanceParts: JSON.parse(JSON.stringify(initialPrinter.maintenance_components)),
+    });
+  };
+
   // Computed Values
   const computed = useMemo(() => {
     const totalTimeHours = calculateTotalTime(state.printTimeHours, state.printTimeMins);
@@ -214,6 +234,7 @@ export const useCalculatorState = () => {
 
   return {
     state,
+    resetState,
     setPrinterId,
     updateState,
     addJobMaterial,
