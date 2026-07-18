@@ -70,7 +70,16 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Nozzle Wiper and Wiping Pad Assembly", replacement_cost_thb: 400, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
       { id: generateId(), name: "Induction Hotend Rack & Magnetic Latch Mechanism", replacement_cost_thb: 4500, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 500 },
       { id: generateId(), name: "Vision Encoder & Optical Sensor Array", replacement_cost_thb: 2990, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 10, periodic_maintenance_interval_hours: 100 },
-      { id: generateId(), name: "AMS 2 Pro Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 }
+      { id: generateId(), name: "AMS 2 Pro Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "AP (Application Processor) Board", replacement_cost_thb: 5005, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "MC (Motion Controller) Board", replacement_cost_thb: 2940, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "5-inch Touchscreen Interface", replacement_cost_thb: 5145, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Live View Camera", replacement_cost_thb: 1750, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "AC Power Supply Unit", replacement_cost_thb: 2030, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Liquid Glue / Glue Sticks", replacement_cost_thb: 350, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Silicone Thermal Socks (3-pack)", replacement_cost_thb: 175, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "AMS Filament Track Switch", replacement_cost_thb: 3490, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "4-in-1 PTFE Adapter", replacement_cost_thb: 365, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
     ]
   },
   "creality_ender3_s1": {
@@ -107,7 +116,6 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Complete Extruder Gear Assembly", replacement_cost_thb: 875, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Auxiliary Stepper Unit", replacement_cost_thb: 875, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "1.5GT RF CoreXY Belts", replacement_cost_thb: 280, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
-      { id: generateId(), name: "Proprietary XY Belt", replacement_cost_thb: 420, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
       { id: generateId(), name: "Textured PEI Build Plate", replacement_cost_thb: 1050, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Bambu Engineering Plate", replacement_cost_thb: 1120, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Cool Plate SuperTack Pro", replacement_cost_thb: 1050, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
@@ -120,7 +128,11 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "AC Power Supply Unit", replacement_cost_thb: 2030, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "TPU Feed Assist Module", replacement_cost_thb: 1750, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "AMS HT (High Temperature) Module", replacement_cost_thb: 5000, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "4-in-1 PTFE Adapter", replacement_cost_thb: 365, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
+      { id: generateId(), name: "4-in-1 PTFE Adapter", replacement_cost_thb: 365, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Replacement Filament Cutter Blades (3-Pack)", replacement_cost_thb: 210, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Nozzle Wiper and Wiping Pad Assembly", replacement_cost_thb: 400, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "AMS Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "AMS Filament Track Switch", replacement_cost_thb: 3490, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
     ]
   },
   "bambu_p2s_combo": {
@@ -137,13 +149,22 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Hotend Heating Assembly (Left)", replacement_cost_thb: 1520, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Extruder Gear Assembly", replacement_cost_thb: 650, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "1.5GT 9mm RF Motion Belts", replacement_cost_thb: 280, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
-      { id: generateId(), name: "Textured PEI Build Plate", replacement_cost_thb: 890, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Dual Texture PEI Plate", replacement_cost_thb: 890, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Cool Plate SuperTack Pro", replacement_cost_thb: 2350, replacement_lifespan_hours: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "Activated Carbon Filter", replacement_cost_thb: 400, replacement_lifespan_hours: 400, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "AMS Filament Track Switch", replacement_cost_thb: 3490, replacement_lifespan_hours: 4000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
       { id: generateId(), name: "4-in-1 PTFE Adapter", replacement_cost_thb: 590, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
-      { id: generateId(), name: "Linear Rail Lubrication Routine", replacement_cost_thb: 0, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 50, periodic_maintenance_interval_hours: 500 }
+      { id: generateId(), name: "Linear Rail Lubrication Routine", replacement_cost_thb: 0, replacement_lifespan_hours: 10000, periodic_maintenance_cost_thb: 50, periodic_maintenance_interval_hours: 500 },
+      { id: generateId(), name: "AP (Application Processor) Board", replacement_cost_thb: 5005, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "MC (Motion Controller) Board", replacement_cost_thb: 2940, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "5-inch Touchscreen Interface", replacement_cost_thb: 5145, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Live View Camera", replacement_cost_thb: 1750, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "AC Power Supply Unit", replacement_cost_thb: 2030, replacement_lifespan_hours: 8000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Replacement Filament Cutter Blades (3-Pack)", replacement_cost_thb: 210, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Nozzle Wiper and Wiping Pad Assembly", replacement_cost_thb: 400, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "AMS Molecular Sieve Desiccant (3A)", replacement_cost_thb: 180, replacement_lifespan_hours: 2000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "Liquid Glue / Glue Sticks", replacement_cost_thb: 350, replacement_lifespan_hours: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Silicone Thermal Socks (3-pack)", replacement_cost_thb: 175, replacement_lifespan_hours: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
     ]
   }
 };
