@@ -101,5 +101,24 @@ export const printerProfiles: Record<string, PrinterProfile> = {
       { id: generateId(), name: "Dual Z-Axis Lead Screws", replacement_lifespan_hours: 4000, replacement_cost_thb: 800, periodic_maintenance_cost_thb: 100, periodic_maintenance_interval_hours: 100 },
       { id: generateId(), name: "X/Y Timing Belts", replacement_lifespan_hours: 2000, replacement_cost_thb: 500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
     ]
+  },
+  "bambu_h2c_combo": {
+    id: "bambu_h2c_combo",
+    name: "Bambu Lab H2C Combo",
+    purchase_price_thb: 95000,
+    estimated_lifespan_hours: 12000,
+    base_power_draw_watts: 250,
+    supports_multi_color: true,
+    maintenance_components: [
+      { id: generateId(), name: "Vortek Hotend Modules (7-pack)", replacement_lifespan_hours: 2000, replacement_cost_thb: 3500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Toolhead Switching Mechanism", replacement_lifespan_hours: 3000, replacement_cost_thb: 2500, periodic_maintenance_cost_thb: 150, periodic_maintenance_interval_hours: 200 },
+      { id: generateId(), name: "CoreXY High-Speed Belts", replacement_lifespan_hours: 2500, replacement_cost_thb: 1000, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Carbon Fiber Linear Rails", replacement_lifespan_hours: 5000, replacement_cost_thb: 3800, periodic_maintenance_cost_thb: 200, periodic_maintenance_interval_hours: 300 },
+      { id: generateId(), name: "Heated Chamber Filter (HEPA/Carbon)", replacement_lifespan_hours: 500, replacement_cost_thb: 600, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Extruder Gear Assemblies", replacement_lifespan_hours: 2500, replacement_cost_thb: 1500, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "Build Plates (High-Temp PEI)", replacement_lifespan_hours: 1500, replacement_cost_thb: 1600, periodic_maintenance_cost_thb: 200, periodic_maintenance_interval_hours: 100 },
+      { id: generateId(), name: "Filament Cutter Blades", replacement_lifespan_hours: 1000, replacement_cost_thb: 200, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 },
+      { id: generateId(), name: "PTFE Tubing (Internal)", replacement_lifespan_hours: 1000, replacement_cost_thb: 250, periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0 }
+    ]
   }
 };

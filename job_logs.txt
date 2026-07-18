@@ -1,0 +1,191 @@
+﻿2026-07-18T08:12:38.1308258Z Current runner version: '2.335.1'
+2026-07-18T08:12:38.1334833Z ##[group]Runner Image Provisioner
+2026-07-18T08:12:38.1335674Z Hosted Compute Agent
+2026-07-18T08:12:38.1336314Z Version: 20260707.563
+2026-07-18T08:12:38.1336997Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-07-18T08:12:38.1337711Z Build Date: 2026-07-07T19:33:50Z
+2026-07-18T08:12:38.1338445Z Worker ID: {5d5dc2dc-c897-482b-805e-6ca7dbed9b7c}
+2026-07-18T08:12:38.1339149Z Azure Region: northcentralus
+2026-07-18T08:12:38.1339728Z ##[endgroup]
+2026-07-18T08:12:38.1341486Z ##[group]Operating System
+2026-07-18T08:12:38.1342140Z Ubuntu
+2026-07-18T08:12:38.1342712Z 24.04.4
+2026-07-18T08:12:38.1343244Z LTS
+2026-07-18T08:12:38.1343744Z ##[endgroup]
+2026-07-18T08:12:38.1344359Z ##[group]Runner Image
+2026-07-18T08:12:38.1344951Z Image: ubuntu-24.04
+2026-07-18T08:12:38.1345498Z Version: 20260714.240.1
+2026-07-18T08:12:38.1346840Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260714.240/images/ubuntu/Ubuntu2404-Readme.md
+2026-07-18T08:12:38.1348854Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260714.240
+2026-07-18T08:12:38.1349825Z ##[endgroup]
+2026-07-18T08:12:38.1350980Z ##[group]GITHUB_TOKEN Permissions
+2026-07-18T08:12:38.1353351Z Contents: read
+2026-07-18T08:12:38.1353940Z Metadata: read
+2026-07-18T08:12:38.1354628Z Pages: write
+2026-07-18T08:12:38.1355301Z ##[endgroup]
+2026-07-18T08:12:38.1357499Z Secret source: Actions
+2026-07-18T08:12:38.1358284Z Prepare workflow directory
+2026-07-18T08:12:38.1703244Z Prepare all required actions
+2026-07-18T08:12:38.1741419Z Getting action download info
+2026-07-18T08:12:38.3825746Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-07-18T08:12:38.5394454Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-07-18T08:12:38.6297516Z Download action repository 'actions/configure-pages@v5' (SHA:983d7736d9b0ae728b81ab479565c72886d7745b)
+2026-07-18T08:12:38.9299218Z Download action repository 'actions/upload-pages-artifact@v3' (SHA:56afc609e74202658d3ffba0e8f6dda462b719fa)
+2026-07-18T08:12:39.0592009Z Download action repository 'actions/deploy-pages@v4' (SHA:d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e)
+2026-07-18T08:12:39.6179295Z Getting action download info
+2026-07-18T08:12:39.6983986Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-07-18T08:12:39.8502604Z Complete job name: deploy
+2026-07-18T08:12:39.9438706Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-18T08:12:39.9450394Z ##[group]Run actions/checkout@v4
+2026-07-18T08:12:39.9452183Z with:
+2026-07-18T08:12:39.9453284Z   repository: ongxeno/3d-printing-cost-calculator
+2026-07-18T08:12:39.9463402Z   token: ***
+2026-07-18T08:12:39.9464397Z   ssh-strict: true
+2026-07-18T08:12:39.9465326Z   ssh-user: git
+2026-07-18T08:12:39.9466374Z   persist-credentials: true
+2026-07-18T08:12:39.9467436Z   clean: true
+2026-07-18T08:12:39.9468445Z   sparse-checkout-cone-mode: true
+2026-07-18T08:12:39.9469626Z   fetch-depth: 1
+2026-07-18T08:12:39.9470572Z   fetch-tags: false
+2026-07-18T08:12:39.9471776Z   show-progress: true
+2026-07-18T08:12:39.9472744Z   lfs: false
+2026-07-18T08:12:39.9473833Z   submodules: false
+2026-07-18T08:12:39.9474858Z   set-safe-directory: true
+2026-07-18T08:12:39.9476227Z ##[endgroup]
+2026-07-18T08:12:40.0551985Z Syncing repository: ongxeno/3d-printing-cost-calculator
+2026-07-18T08:12:40.0556618Z ##[group]Getting Git version info
+2026-07-18T08:12:40.0559670Z Working directory is '/home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator'
+2026-07-18T08:12:40.0564225Z [command]/usr/bin/git version
+2026-07-18T08:12:40.0607103Z git version 2.54.0
+2026-07-18T08:12:40.0667653Z ##[endgroup]
+2026-07-18T08:12:40.0683943Z Temporarily overriding HOME='/home/runner/work/_temp/ab820f32-2715-4701-a856-3e9b24eacfae' before making global git config changes
+2026-07-18T08:12:40.0689122Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-18T08:12:40.0694250Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator
+2026-07-18T08:12:40.0752546Z Deleting the contents of '/home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator'
+2026-07-18T08:12:40.0757469Z ##[group]Initializing the repository
+2026-07-18T08:12:40.0762444Z [command]/usr/bin/git init /home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator
+2026-07-18T08:12:40.0903423Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-07-18T08:12:40.0907072Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-07-18T08:12:40.0910429Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-07-18T08:12:40.0913417Z hint: call:
+2026-07-18T08:12:40.0915271Z hint:
+2026-07-18T08:12:40.0917010Z hint: 	git config --global init.defaultBranch <name>
+2026-07-18T08:12:40.0919166Z hint:
+2026-07-18T08:12:40.0921404Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-07-18T08:12:40.0924831Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-07-18T08:12:40.0927498Z hint:
+2026-07-18T08:12:40.0928889Z hint: 	git branch -m <name>
+2026-07-18T08:12:40.0930598Z hint:
+2026-07-18T08:12:40.0933068Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-07-18T08:12:40.0937586Z Initialized empty Git repository in /home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator/.git/
+2026-07-18T08:12:40.0944995Z [command]/usr/bin/git remote add origin https://github.com/ongxeno/3d-printing-cost-calculator
+2026-07-18T08:12:40.1002873Z ##[endgroup]
+2026-07-18T08:12:40.1005960Z ##[group]Disabling automatic garbage collection
+2026-07-18T08:12:40.1012727Z [command]/usr/bin/git config --local gc.auto 0
+2026-07-18T08:12:40.1069419Z ##[endgroup]
+2026-07-18T08:12:40.1161399Z ##[group]Setting up auth
+2026-07-18T08:12:40.1164632Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-18T08:12:40.1173433Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-18T08:12:40.1570624Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-18T08:12:40.1615495Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-18T08:12:40.1887022Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-18T08:12:40.1936292Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-18T08:12:40.2215267Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-07-18T08:12:40.2256988Z ##[endgroup]
+2026-07-18T08:12:40.2259584Z ##[group]Fetching the repository
+2026-07-18T08:12:40.2271782Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ea5b79c02048be3a07ec21061b4bdf8d9d37e0d9:refs/remotes/origin/master
+2026-07-18T08:12:40.4884850Z From https://github.com/ongxeno/3d-printing-cost-calculator
+2026-07-18T08:12:40.4888264Z  * [new ref]         ea5b79c02048be3a07ec21061b4bdf8d9d37e0d9 -> origin/master
+2026-07-18T08:12:40.4929302Z ##[endgroup]
+2026-07-18T08:12:40.4932382Z ##[group]Determining the checkout info
+2026-07-18T08:12:40.4935480Z ##[endgroup]
+2026-07-18T08:12:40.4938822Z [command]/usr/bin/git sparse-checkout disable
+2026-07-18T08:12:40.4997365Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-07-18T08:12:40.5036073Z ##[group]Checking out the ref
+2026-07-18T08:12:40.5041078Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+2026-07-18T08:12:40.5133394Z Reset branch 'master'
+2026-07-18T08:12:40.5136031Z branch 'master' set up to track 'origin/master'.
+2026-07-18T08:12:40.5142653Z ##[endgroup]
+2026-07-18T08:12:40.5189073Z [command]/usr/bin/git log -1 --format=%H
+2026-07-18T08:12:40.5217047Z ea5b79c02048be3a07ec21061b4bdf8d9d37e0d9
+2026-07-18T08:12:40.5557785Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-18T08:12:40.5562860Z ##[group]Run actions/setup-node@v4
+2026-07-18T08:12:40.5563899Z with:
+2026-07-18T08:12:40.5564651Z   node-version: 20
+2026-07-18T08:12:40.5565453Z   cache: npm
+2026-07-18T08:12:40.5566232Z   always-auth: false
+2026-07-18T08:12:40.5567079Z   check-latest: false
+2026-07-18T08:12:40.5576244Z   token: ***
+2026-07-18T08:12:40.5577040Z ##[endgroup]
+2026-07-18T08:12:40.7047173Z Attempting to download 20...
+2026-07-18T08:12:40.7165057Z (node:2253) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-07-18T08:12:40.7182010Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-07-18T08:12:41.2279743Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-07-18T08:12:41.5563112Z Extracting ...
+2026-07-18T08:12:41.5714256Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/c8732f92-a266-41d4-b904-f8abd0c5cd10 -f /home/runner/work/_temp/70a6f3de-43a4-4261-a792-d229d4610e2d
+2026-07-18T08:12:42.5879055Z Adding to the cache ...
+2026-07-18T08:12:44.4324602Z ##[group]Environment details
+2026-07-18T08:12:44.6655672Z node: v20.20.2
+2026-07-18T08:12:44.6656342Z npm: 10.8.2
+2026-07-18T08:12:44.6656819Z yarn: 1.22.22
+2026-07-18T08:12:44.6657846Z ##[endgroup]
+2026-07-18T08:12:44.6678483Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+2026-07-18T08:12:44.7748215Z /home/runner/.npm
+2026-07-18T08:12:44.8814557Z npm cache is not found
+2026-07-18T08:12:44.9021890Z ##[group]Run npm ci
+2026-07-18T08:12:44.9022242Z [36;1mnpm ci[0m
+2026-07-18T08:12:44.9107403Z shell: /usr/bin/bash -e {0}
+2026-07-18T08:12:44.9107756Z ##[endgroup]
+2026-07-18T08:12:47.7872641Z 
+2026-07-18T08:12:47.7880593Z added 53 packages, and audited 54 packages in 3s
+2026-07-18T08:12:47.7881547Z 
+2026-07-18T08:12:47.7882019Z 11 packages are looking for funding
+2026-07-18T08:12:47.7882492Z   run `npm fund` for details
+2026-07-18T08:12:47.7883470Z 
+2026-07-18T08:12:47.7883795Z found 0 vulnerabilities
+2026-07-18T08:12:47.8049562Z ##[group]Run npm run build
+2026-07-18T08:12:47.8049897Z [36;1mnpm run build[0m
+2026-07-18T08:12:47.8109022Z shell: /usr/bin/bash -e {0}
+2026-07-18T08:12:47.8109349Z ##[endgroup]
+2026-07-18T08:12:47.9274675Z 
+2026-07-18T08:12:47.9275516Z > 3d-printing-cost-calculator@0.0.0 build
+2026-07-18T08:12:47.9276241Z > tsc -b && vite build
+2026-07-18T08:12:47.9276479Z 
+2026-07-18T08:12:50.4727080Z [36mvite v8.1.5 [32mbuilding client environment for production...[36m[39m
+2026-07-18T08:12:50.4865358Z [2K
+2026-07-18T08:12:50.6376867Z transforming...✓ 1784 modules transformed.
+2026-07-18T08:12:50.6656445Z rendering chunks...
+2026-07-18T08:12:50.6981829Z computing gzip size...
+2026-07-18T08:12:50.7018814Z dist/index.html                   0.48 kB │ gzip:  0.30 kB
+2026-07-18T08:12:50.7020087Z dist/assets/index-Ce4OprN8.css   25.37 kB │ gzip:  5.38 kB
+2026-07-18T08:12:50.7021632Z dist/assets/index-DxZcnHiB.js   218.92 kB │ gzip: 67.16 kB
+2026-07-18T08:12:50.7022553Z 
+2026-07-18T08:12:50.7023329Z [32m✓ built in 225ms[39m
+2026-07-18T08:12:50.7270892Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-18T08:12:50.7273150Z ##[group]Run actions/configure-pages@v5
+2026-07-18T08:12:50.7273442Z with:
+2026-07-18T08:12:50.7273636Z   enablement: true
+2026-07-18T08:12:50.7276351Z   token: ***
+2026-07-18T08:12:50.7276555Z ##[endgroup]
+2026-07-18T08:12:51.0492764Z ##[warning]Get Pages site failed. Error: Not Found - https://docs.github.com/rest/pages/pages#get-a-apiname-pages-site
+2026-07-18T08:12:51.1267133Z ##[error]Create Pages site failed. Error: Resource not accessible by integration - https://docs.github.com/rest/pages/pages#create-a-apiname-pages-site
+2026-07-18T08:12:51.1270972Z ##[error]HttpError: Resource not accessible by integration - https://docs.github.com/rest/pages/pages#create-a-apiname-pages-site
+2026-07-18T08:12:51.1490852Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-07-18T08:12:51.1492579Z Post job cleanup.
+2026-07-18T08:12:51.2393733Z [command]/usr/bin/git version
+2026-07-18T08:12:51.2436626Z git version 2.54.0
+2026-07-18T08:12:51.2478571Z Temporarily overriding HOME='/home/runner/work/_temp/e889319b-e712-4d42-bb81-83db396c3211' before making global git config changes
+2026-07-18T08:12:51.2480034Z Adding repository directory to the temporary git global config as a safe directory
+2026-07-18T08:12:51.2485364Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/3d-printing-cost-calculator/3d-printing-cost-calculator
+2026-07-18T08:12:51.2527414Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-07-18T08:12:51.2565878Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-07-18T08:12:51.2826594Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-07-18T08:12:51.2861648Z http.https://github.com/.extraheader
+2026-07-18T08:12:51.2874303Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-07-18T08:12:51.2910494Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-07-18T08:12:51.3163756Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-07-18T08:12:51.3206070Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-07-18T08:12:51.3619710Z Evaluate and set environment url
+2026-07-18T08:12:51.3624300Z Evaluated environment url: 
+2026-07-18T08:12:51.3625016Z Cleaning up orphan processes
+2026-07-18T08:12:51.3896590Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/configure-pages@v5, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
