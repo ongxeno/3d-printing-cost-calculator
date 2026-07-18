@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { filamentPresets, printerProfiles } from '../data/seedData';
 import type { MaintenanceComponent } from '../data/seedData';
 import type { CalculatorState, JobMaterial } from '../utils/formulas';
@@ -17,28 +17,45 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 
 export const useCalculatorState = () => {
   // Default to the first printer profile
-  const initialPrinter = printerProfiles['bambu_combo_complete'];
+  const initialPrinter = printerProfiles['bambu_x2d_combo'] || Object.values(printerProfiles)[0];
   
-  const [state, setState] = useState<CalculatorState>({
-    printerId: initialPrinter.id,
-    
-    printTimeHours: 0,
-    printTimeMins: 0,
-    jobMaterials: [],
-    
-    elecRate: 5.0, // THB/kWh Default
-    laborRate: 150, // THB/hr Default
-    
-    prepTime: 5,
-    setupTime: 5,
-    postTime: 5,
-    failureRate: 5, // 5% default
-    
-    printerPrice: initialPrinter.purchase_price_thb,
-    printerLifespan: initialPrinter.estimated_lifespan_hours,
-    basePowerDraw: initialPrinter.base_power_draw_watts,
-    maintenanceParts: JSON.parse(JSON.stringify(initialPrinter.maintenance_components)), // deep copy
+  const [state, setState] = useState<CalculatorState>(() => {
+    try {
+      const saved = localStorage.getItem('3dprint_calculator_state');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (printerProfiles[parsed.printerId]) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.error("Failed to parse local storage data", e);
+    }
+    return {
+      printerId: initialPrinter.id,
+      
+      printTimeHours: 0,
+      printTimeMins: 0,
+      jobMaterials: [],
+      
+      elecRate: 5.0, // THB/kWh Default
+      laborRate: 150, // THB/hr Default
+      
+      prepTime: 5,
+      setupTime: 5,
+      postTime: 5,
+      failureRate: 5, // 5% default
+      
+      printerPrice: initialPrinter.purchase_price_thb,
+      printerLifespan: initialPrinter.estimated_lifespan_hours,
+      basePowerDraw: initialPrinter.base_power_draw_watts,
+      maintenanceParts: JSON.parse(JSON.stringify(initialPrinter.maintenance_components)), // deep copy
+    };
   });
+
+  useEffect(() => {
+    localStorage.setItem('3dprint_calculator_state', JSON.stringify(state));
+  }, [state]);
 
   // Handle printer change
   const setPrinterId = (id: string) => {
