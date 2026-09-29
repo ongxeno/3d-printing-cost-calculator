@@ -65,8 +65,9 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
             <div key={mat.id} className="flex flex-col gap-3 p-3 bg-surface rounded-lg border border-border">
               <div className="flex items-end gap-3">
                 <div className="flex-1">
-                  <label className="label-text">Role</label>
+                  <label htmlFor={`${mat.id}-role`} className="label-text">Role</label>
                   <select
+                    id={`${mat.id}-role`}
                     value={mat.role}
                     onChange={(e) => updateJobMaterial(mat.id, { role: e.target.value })}
                     className="input-field py-2"
@@ -77,8 +78,9 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
                   </select>
                 </div>
                 <div className="flex-1">
-                  <label className="label-text">Filament Preset</label>
+                  <label htmlFor={`${mat.id}-filament`} className="label-text">Filament Preset</label>
                   <select
+                    id={`${mat.id}-filament`}
                     value={mat.filamentId}
                     onChange={(e) => updateJobMaterial(mat.id, { filamentId: e.target.value })}
                     className="input-field py-2 truncate"
@@ -100,6 +102,7 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
                   onClick={() => removeJobMaterial(mat.id)}
                   className="btn-icon text-red-400 hover:text-red-300 hover:bg-red-400/10 mb-1"
                   title="Remove Material"
+                  aria-label="Remove material"
                 >
                   <Trash2 size={20} />
                 </button>

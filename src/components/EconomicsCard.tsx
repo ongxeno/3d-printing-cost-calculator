@@ -79,6 +79,7 @@ export const EconomicsCard: React.FC<EconomicsCardProps> = ({
             value={failureRate}
             onChange={(val) => updateState({ failureRate: val })}
             suffix="%"
+            max={100}
           />
         </div>
       </div>

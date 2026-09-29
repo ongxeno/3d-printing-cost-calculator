@@ -19,7 +19,7 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
         </div>
         <div>
           <h2 className="text-sm font-medium text-text-muted m-0 uppercase tracking-wider">Grand Total</h2>
-          <div className="text-3xl font-bold text-text-h font-mono tracking-tight text-primary">
+          <div role="status" aria-live="polite" className="text-3xl font-bold text-text-h font-mono tracking-tight text-primary">
             {formatCurrency(computed.grandTotal)}
           </div>
         </div>
