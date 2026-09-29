@@ -1,9 +1,16 @@
 import type { CalculatorState, CostBreakdown } from './formulas';
 import { filamentPresets } from '../data/seedData';
+import type { FilamentPreset } from '../data/seedData';
+import { isCustomId } from './profiles';
 
 export const formatMoney = (value: number): string => value.toFixed(2);
 
-export const toPlainText = (state: CalculatorState, costs: CostBreakdown, printerName: string): string => {
+export const toPlainText = (
+  state: CalculatorState,
+  costs: CostBreakdown,
+  printerName: string,
+  filaments: Record<string, FilamentPreset> = filamentPresets
+): string => {
   const lines: string[] = [
     'TrueCost Quote',
     `Printer: ${printerName}`,
@@ -17,7 +24,8 @@ export const toPlainText = (state: CalculatorState, costs: CostBreakdown, printe
     lines.push('- (none)');
   } else {
     state.jobMaterials.forEach(mat => {
-      const filamentName = filamentPresets[mat.filamentId]?.name ?? mat.filamentId;
+      const filamentName = filaments[mat.filamentId]?.name
+        ?? (isCustomId(mat.filamentId) ? 'Custom filament (removed)' : mat.filamentId);
       const wasteSuffix = mat.waste_g > 0 ? ` (+${mat.waste_g} g waste)` : '';
       lines.push(`- ${mat.role}: ${filamentName} ${mat.weight_g} g${wasteSuffix}`);
     });

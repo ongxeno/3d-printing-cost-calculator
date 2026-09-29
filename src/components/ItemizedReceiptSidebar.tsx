@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import { Receipt, ChevronDown, ChevronUp, Copy, Download, Printer } from 'lucide-react';
 import type { CostBreakdown, CalculatorState } from '../utils/formulas';
-import { printerProfiles } from '../data/seedData';
+import { seedProfiles } from '../utils/profiles';
+import type { ProfileSet } from '../utils/profiles';
 import { toPlainText, toCsv, downloadTextFile } from '../utils/exportQuote';
 
 interface ItemizedReceiptSidebarProps {
   computed: CostBreakdown;
   state: CalculatorState;
+  catalog?: ProfileSet;
 }
 
 const formatCurrency = (val: number) => 
   new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(val);
 
-export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ computed, state }) => {
+export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ computed, state, catalog = seedProfiles }) => {
   const [isWearExpanded, setIsWearExpanded] = useState(false);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
 
-  const printerName = printerProfiles[state.printerId]?.name ?? state.printerId;
+  const printerName = catalog.printers[state.printerId]?.name ?? state.printerId;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(toPlainText(state, computed, printerName));
+      await navigator.clipboard.writeText(toPlainText(state, computed, printerName, catalog.filaments));
       setCopyStatus('copied');
     } catch {
       setCopyStatus('failed');

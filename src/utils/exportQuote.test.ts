@@ -88,6 +88,27 @@ describe('toPlainText', () => {
     expect(text).toContain('- Part: mat_unknown 100 g (+10 g waste)');
   });
 
+  it('resolves custom filament names from a passed catalog', () => {
+    const customState: CalculatorState = {
+      ...state,
+      jobMaterials: [{ ...state.jobMaterials[0], filamentId: 'custom_gold' }],
+    };
+    const filaments = {
+      custom_gold: { id: 'custom_gold', name: 'Silk Gold', price_per_kg_thb: 888, power_draw_multiplier: 1, hardware_wear_multiplier: 1 },
+    };
+    const text = toPlainText(customState, computeCosts(customState), printerName, filaments);
+    expect(text).toContain('- Part: Silk Gold 100 g (+10 g waste)');
+  });
+
+  it('labels a removed custom filament instead of printing its raw id', () => {
+    const removed: CalculatorState = {
+      ...state,
+      jobMaterials: [{ ...state.jobMaterials[0], filamentId: 'custom_deleted' }],
+    };
+    const text = toPlainText(removed, computeCosts(removed), printerName);
+    expect(text).toContain('- Part: Custom filament (removed) 100 g (+10 g waste)');
+  });
+
   it('adds quantity and per-unit lines when quantity is 4', () => {
     const qtyState: CalculatorState = { ...state, quantity: 4, postTime: 5 };
     const qtyCosts = computeCosts(qtyState);
