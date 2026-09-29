@@ -100,6 +100,18 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
           <span className="font-medium">Failure Risk Buffer</span>
           <span className="font-mono font-medium">+{formatCurrency(computed.failureBufferCost)}</span>
         </div>
+
+        {/* Suggested Price & Profit */}
+        <div className="border-t border-border/50 pt-4 mt-2 space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-primary">Suggested Price</span>
+            <span className="font-mono font-semibold text-primary">{formatCurrency(computed.sellingPrice)}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-text font-medium">Profit</span>
+            <span className="font-mono text-green-400">+{formatCurrency(computed.profit)}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

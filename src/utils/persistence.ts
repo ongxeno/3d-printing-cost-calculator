@@ -50,6 +50,7 @@ export const createDefaultState = (): CalculatorState => {
     jobMaterials: [],
     elecRate: 5,
     laborRate: 150,
+    markupPercent: 30,
     prepTime: 5,
     setupTime: 5,
     postTime: 5,
@@ -73,6 +74,7 @@ const NUMERIC_FIELDS = [
   'printerPrice',
   'printerLifespan',
   'basePowerDraw',
+  'markupPercent',
 ] as const;
 
 export const sanitizeState = (raw: unknown): CalculatorState | null => {

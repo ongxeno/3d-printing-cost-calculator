@@ -67,6 +67,7 @@ function App() {
             <EconomicsCard 
               elecRate={state.elecRate}
               laborRate={state.laborRate}
+              markupPercent={state.markupPercent}
               prepTime={state.prepTime}
               setupTime={state.setupTime}
               postTime={state.postTime}

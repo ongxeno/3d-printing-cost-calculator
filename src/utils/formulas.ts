@@ -22,6 +22,7 @@ export interface CalculatorState {
   // Local Economics
   elecRate: number; // THB/kWh
   laborRate: number; // THB/hr
+  markupPercent: number; // %
   
   // Labor & Buffers
   prepTime: number; // mins
@@ -122,6 +123,9 @@ export const calculateTotalComponentWear = (
   }, 0);
 };
 
+export const calculateSellingPrice = (totalCost: number, markupPercent: number): number =>
+  totalCost * (1 + markupPercent / 100);
+
 export interface CostBreakdown {
   totalTimeHours: number;
   materialCost: number;
@@ -134,6 +138,8 @@ export interface CostBreakdown {
   baseCost: number;
   failureBufferCost: number;
   grandTotal: number;
+  sellingPrice: number;
+  profit: number;
   materialsByRole: Record<string, number>;
   effectiveDrawWatts: number;
 }
@@ -177,6 +183,8 @@ export const computeCosts = (state: CalculatorState): CostBreakdown => {
   const baseCost = materialCost + energyCost + laborCost + baseHardwareDepreciation + totalComponentWear;
   const failureBufferCost = baseCost * (state.failureRate / 100);
   const grandTotal = baseCost + failureBufferCost;
+  const sellingPrice = calculateSellingPrice(grandTotal, state.markupPercent);
+  const profit = sellingPrice - grandTotal;
 
   const materialsByRole: Record<string, number> = {};
   state.jobMaterials.forEach(mat => {
@@ -196,6 +204,8 @@ export const computeCosts = (state: CalculatorState): CostBreakdown => {
     baseCost,
     failureBufferCost,
     grandTotal,
+    sellingPrice,
+    profit,
     materialsByRole,
     effectiveDrawWatts: state.basePowerDraw * multipliers.power
   };

@@ -42,6 +42,19 @@ describe('computeCosts', () => {
     expect(result.grandTotal).toBeCloseTo(49.5, 6);
   });
 
+  it('applies the markup on top of the grand total', () => {
+    const result = computeCosts(bareState({ markupPercent: 30, jobMaterials: [mat()] }));
+    expect(result.grandTotal).toBeCloseTo(45, 6);
+    expect(result.sellingPrice).toBeCloseTo(58.5, 6);
+    expect(result.profit).toBeCloseTo(13.5, 6);
+  });
+
+  it('returns zero profit at zero markup', () => {
+    const result = computeCosts(bareState({ markupPercent: 0, jobMaterials: [mat()] }));
+    expect(result.sellingPrice).toBeCloseTo(result.grandTotal, 6);
+    expect(result.profit).toBeCloseTo(0, 6);
+  });
+
   it('groups material cost by role', () => {
     const result = computeCosts(bareState({
       jobMaterials: [
