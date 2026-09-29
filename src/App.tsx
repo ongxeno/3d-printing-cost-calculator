@@ -1,5 +1,6 @@
 
 import { useCalculatorState } from './hooks/useCalculatorState';
+import { useCustomProfiles } from './hooks/useCustomProfiles';
 import { useSavedJobs } from './hooks/useSavedJobs';
 import { HardwareProfileCard } from './components/HardwareProfileCard';
 import { JobDetailsCard } from './components/JobDetailsCard';
@@ -11,6 +12,7 @@ import { Calculator, RotateCcw } from 'lucide-react';
 
 function App() {
   const savedJobs = useSavedJobs();
+  const profiles = useCustomProfiles();
   const {
     state,
     resetState,
@@ -24,7 +26,7 @@ function App() {
     updateMaintenancePart,
     removeMaintenancePart,
     computed
-  } = useCalculatorState();
+  } = useCalculatorState(profiles.catalog);
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">

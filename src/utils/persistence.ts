@@ -1,6 +1,8 @@
-import { filamentPresets, printerProfiles } from '../data/seedData';
 import type { CalculatorState, JobMaterial } from './formulas';
-import type { MaintenanceComponent } from '../data/seedData';
+import type { FilamentPreset } from '../data/seedData';
+import { seedProfiles } from './profiles';
+import type { ProfileSet } from './profiles';
+import { sanitizeMaintenancePart } from './profiles';
 import { generateId } from './id';
 
 export const STORAGE_KEY = '3dprint_calculator_state';
@@ -12,9 +14,9 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
 const isNonNegativeFiniteNumber = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value >= 0;
 
-const sanitizeJobMaterial = (raw: Record<string, unknown>): JobMaterial => {
+const sanitizeJobMaterial = (raw: Record<string, unknown>, filaments: Record<string, FilamentPreset>): JobMaterial => {
   const filamentId = typeof raw.filamentId === 'string' ? raw.filamentId : 'mat_pla';
-  const preset = filamentPresets[filamentId];
+  const preset = filaments[filamentId];
   return {
     id: typeof raw.id === 'string' ? raw.id : generateId(),
     filamentId,
@@ -33,17 +35,8 @@ const sanitizeJobMaterial = (raw: Record<string, unknown>): JobMaterial => {
   };
 };
 
-const sanitizeMaintenancePart = (raw: Record<string, unknown>): MaintenanceComponent => ({
-  id: typeof raw.id === 'string' ? raw.id : generateId(),
-  name: typeof raw.name === 'string' ? raw.name : 'Component',
-  replacement_cost_thb: isNonNegativeFiniteNumber(raw.replacement_cost_thb) ? raw.replacement_cost_thb : 0,
-  replacement_lifespan_hours: isNonNegativeFiniteNumber(raw.replacement_lifespan_hours) ? raw.replacement_lifespan_hours : 0,
-  periodic_maintenance_cost_thb: isNonNegativeFiniteNumber(raw.periodic_maintenance_cost_thb) ? raw.periodic_maintenance_cost_thb : 0,
-  periodic_maintenance_interval_hours: isNonNegativeFiniteNumber(raw.periodic_maintenance_interval_hours) ? raw.periodic_maintenance_interval_hours : 0,
-});
-
-export const createDefaultState = (): CalculatorState => {
-  const printer = printerProfiles['bambu_x2d_combo'] || Object.values(printerProfiles)[0];
+export const createDefaultState = (profiles: ProfileSet = seedProfiles): CalculatorState => {
+  const printer = profiles.printers['bambu_x2d_combo'] || Object.values(profiles.printers)[0];
   return {
     printerId: printer.id,
     printTimeHours: 0,
@@ -79,14 +72,14 @@ const NUMERIC_FIELDS = [
   'markupPercent',
 ] as const;
 
-export const sanitizeState = (raw: unknown): CalculatorState | null => {
+export const sanitizeState = (raw: unknown, profiles: ProfileSet = seedProfiles): CalculatorState | null => {
   if (!isPlainObject(raw)) return null;
   const rawPrinterId = raw.printerId;
-  if (typeof rawPrinterId !== 'string' || !printerProfiles[rawPrinterId]) return null;
-  const printer = printerProfiles[rawPrinterId];
+  if (typeof rawPrinterId !== 'string' || !profiles.printers[rawPrinterId]) return null;
+  const printer = profiles.printers[rawPrinterId];
 
   const state: CalculatorState = {
-    ...createDefaultState(),
+    ...createDefaultState(profiles),
     printerId: printer.id,
     printerPrice: printer.purchase_price_thb,
     printerLifespan: printer.estimated_lifespan_hours,
@@ -110,7 +103,7 @@ export const sanitizeState = (raw: unknown): CalculatorState | null => {
   state.jobMaterials = Array.isArray(rawMaterials)
     ? rawMaterials
       .filter((item): item is Record<string, unknown> => isPlainObject(item))
-      .map(sanitizeJobMaterial)
+      .map(item => sanitizeJobMaterial(item, profiles.filaments))
     : [];
 
   const rawParts = raw.maintenanceParts;
@@ -123,26 +116,26 @@ export const sanitizeState = (raw: unknown): CalculatorState | null => {
   return state;
 };
 
-export const loadState = (): CalculatorState => {
+export const loadState = (profiles: ProfileSet = seedProfiles): CalculatorState => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === null) {
-      return createDefaultState();
+      return createDefaultState(profiles);
     }
     const parsed: unknown = JSON.parse(saved);
     let raw: unknown;
     if (isPlainObject(parsed) && typeof parsed.schemaVersion === 'number') {
       if (parsed.schemaVersion > SCHEMA_VERSION) {
-        return createDefaultState();
+        return createDefaultState(profiles);
       }
       raw = parsed.state;
     } else {
       raw = parsed;
     }
-    return sanitizeState(raw) ?? createDefaultState();
+    return sanitizeState(raw, profiles) ?? createDefaultState(profiles);
   } catch (e) {
     console.error('Failed to load calculator state', e);
-    return createDefaultState();
+    return createDefaultState(profiles);
   }
 };
 

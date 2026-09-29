@@ -8,6 +8,7 @@ import {
   saveState,
   clearState,
 } from './persistence';
+import { seedProfiles } from './profiles';
 
 const makeStorage = () => {
   const store: Record<string, string> = {};
@@ -101,6 +102,34 @@ describe('sanitizeState', () => {
       jobMaterials: [{ id: 'x', filamentId: 'mat_pla', weight_g: 10, role: 'Part', waste_g: -3 }],
     });
     expect(result?.jobMaterials[0].waste_g).toBe(0);
+  });
+
+  it('accepts a custom printer id when the catalog contains it, rejects it otherwise', () => {
+    const customPrinter = {
+      id: 'custom_p1',
+      name: 'Custom Printer',
+      purchase_price_thb: 1,
+      estimated_lifespan_hours: 1,
+      base_power_draw_watts: 1,
+      supports_multi_color: false,
+      maintenance_components: [],
+    };
+    const catalog = {
+      filaments: { ...seedProfiles.filaments },
+      printers: { ...seedProfiles.printers, custom_p1: customPrinter },
+    };
+    const accepted = sanitizeState({ ...createDefaultState(catalog), printerId: 'custom_p1', printerPrice: 7, printerLifespan: 8, basePowerDraw: 9 }, catalog);
+    expect(accepted?.printerId).toBe('custom_p1');
+    expect(accepted?.printerPrice).toBe(7);
+    expect(sanitizeState({ ...createDefaultState(), printerId: 'custom_p1' })).toBeNull();
+  });
+
+  it('createDefaultState(catalog) still picks bambu_x2d_combo', () => {
+    const catalog = {
+      filaments: { ...seedProfiles.filaments },
+      printers: { ...seedProfiles.printers, custom_p1: { id: 'custom_p1', name: 'C', purchase_price_thb: 1, estimated_lifespan_hours: 1, base_power_draw_watts: 1, supports_multi_color: false, maintenance_components: [] } },
+    };
+    expect(createDefaultState(catalog).printerId).toBe('bambu_x2d_combo');
   });
 });
 
