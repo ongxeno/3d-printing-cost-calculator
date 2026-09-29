@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useId } from 'react';
+import { clampValue } from '../utils/clamp';
 
 interface InputFieldProps {
   label: string;
@@ -6,7 +7,8 @@ interface InputFieldProps {
   onChange: (val: number) => void;
   suffix?: string;
   min?: number;
-  step?: number;
+  max?: number;
+  hint?: string;
   className?: string;
 }
 
@@ -15,8 +17,12 @@ export const InputField: React.FC<InputFieldProps> = ({
   value, 
   onChange, 
   suffix,
+  min = 0,
+  max,
+  hint,
   className = ''
 }) => {
+  const id = useId();
   // Convert value to string for the input field to prevent cursor jumping
   const displayValue = value === 0 ? '0' : value.toString();
 
@@ -24,26 +30,28 @@ export const InputField: React.FC<InputFieldProps> = ({
     const rawVal = e.target.value;
     // Allow empty string to mean 0 for easier clearing
     if (rawVal === '') {
-      onChange(0);
+      onChange(clampValue(0, min, max));
       return;
     }
     
     // Parse to float, if valid
     const parsed = parseFloat(rawVal);
-    if (!isNaN(parsed)) {
-      onChange(parsed);
+    if (Number.isFinite(parsed)) {
+      onChange(clampValue(parsed, min, max));
     }
   };
 
   return (
     <div className={`flex flex-col ${className}`}>
-      <label className="label-text">{label}</label>
+      <label htmlFor={id} className="label-text">{label}</label>
       <div className="relative">
         <input
+          id={id}
           type="text"
           inputMode="decimal"
           value={displayValue}
           onChange={handleChange}
+          aria-describedby={hint ? `${id}-hint` : undefined}
           className="input-field pr-12"
         />
         {suffix && (
@@ -52,6 +60,9 @@ export const InputField: React.FC<InputFieldProps> = ({
           </span>
         )}
       </div>
+      {hint && (
+        <p id={`${id}-hint`} className="text-xs text-orange-400 mt-1">{hint}</p>
+      )}
     </div>
   );
 };

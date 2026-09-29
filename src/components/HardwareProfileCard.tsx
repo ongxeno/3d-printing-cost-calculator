@@ -18,8 +18,9 @@ export const HardwareProfileCard: React.FC<HardwareProfileCardProps> = ({ printe
       </div>
       
       <div className="flex flex-col">
-        <label className="label-text">Select Printer</label>
+        <label htmlFor="printer-select" className="label-text">Select Printer</label>
         <select
+          id="printer-select"
           value={printerId}
           onChange={(e) => onChange(e.target.value)}
           className="input-field appearance-none cursor-pointer"

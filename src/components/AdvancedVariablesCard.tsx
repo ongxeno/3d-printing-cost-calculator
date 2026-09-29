@@ -52,6 +52,7 @@ export const AdvancedVariablesCard: React.FC<AdvancedVariablesCardProps> = ({
           value={printerLifespan}
           onChange={(val) => updateState({ printerLifespan: val })}
           suffix="hrs"
+          hint={printerLifespan <= 0 ? 'Lifespan is 0 — hardware depreciation is skipped.' : undefined}
         />
       </div>
 
@@ -71,8 +72,9 @@ export const AdvancedVariablesCard: React.FC<AdvancedVariablesCardProps> = ({
             <div key={part.id} className="p-4 bg-surface rounded-lg border border-border flex flex-col gap-3">
               <div className="flex items-center gap-3">
                 <div className="flex-1">
-                  <label className="label-text">Part Name</label>
+                  <label htmlFor={`${part.id}-name`} className="label-text">Part Name</label>
                   <input
+                    id={`${part.id}-name`}
                     type="text"
                     value={part.name}
                     onChange={(e) => updateMaintenancePart(part.id, { name: e.target.value })}
@@ -83,6 +85,7 @@ export const AdvancedVariablesCard: React.FC<AdvancedVariablesCardProps> = ({
                   onClick={() => removeMaintenancePart(part.id)}
                   className="btn-icon text-red-400 hover:text-red-300 hover:bg-red-400/10 mt-6"
                   title="Remove Part"
+                  aria-label="Remove maintenance part"
                 >
                   <Trash2 size={20} />
                 </button>
@@ -100,6 +103,7 @@ export const AdvancedVariablesCard: React.FC<AdvancedVariablesCardProps> = ({
                   value={part.replacement_lifespan_hours}
                   onChange={(val) => updateMaintenancePart(part.id, { replacement_lifespan_hours: val })}
                   suffix="hrs"
+                  hint={part.replacement_cost_thb > 0 && part.replacement_lifespan_hours <= 0 ? 'No lifespan set — replacement cost is ignored.' : undefined}
                 />
                 <InputField
                   label="Periodic Cost"
@@ -112,6 +116,7 @@ export const AdvancedVariablesCard: React.FC<AdvancedVariablesCardProps> = ({
                   value={part.periodic_maintenance_interval_hours}
                   onChange={(val) => updateMaintenancePart(part.id, { periodic_maintenance_interval_hours: val })}
                   suffix="hrs"
+                  hint={part.periodic_maintenance_cost_thb > 0 && part.periodic_maintenance_interval_hours <= 0 ? 'No interval set — periodic cost is ignored.' : undefined}
                 />
               </div>
             </div>
