@@ -1,16 +1,20 @@
 
 import { useCalculatorState } from './hooks/useCalculatorState';
+import { useSavedJobs } from './hooks/useSavedJobs';
 import { HardwareProfileCard } from './components/HardwareProfileCard';
 import { JobDetailsCard } from './components/JobDetailsCard';
 import { EconomicsCard } from './components/EconomicsCard';
 import { AdvancedVariablesCard } from './components/AdvancedVariablesCard';
+import { SavedJobsCard } from './components/SavedJobsCard';
 import { ItemizedReceiptSidebar } from './components/ItemizedReceiptSidebar';
 import { Calculator, RotateCcw } from 'lucide-react';
 
 function App() {
+  const savedJobs = useSavedJobs();
   const {
     state,
     resetState,
+    replaceState,
     setPrinterId,
     updateState,
     addJobMaterial,
@@ -85,6 +89,16 @@ function App() {
               addMaintenancePart={addMaintenancePart}
               updateMaintenancePart={updateMaintenancePart}
               removeMaintenancePart={removeMaintenancePart}
+            />
+
+            <SavedJobsCard
+              jobs={savedJobs.jobs}
+              currentState={state}
+              onSave={(name) => savedJobs.saveJob(name, state)}
+              onLoad={replaceState}
+              onRename={savedJobs.renameJob}
+              onDelete={savedJobs.deleteJob}
+              onDuplicate={savedJobs.duplicateJob}
             />
           </div>
 
