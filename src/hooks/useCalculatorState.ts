@@ -1,13 +1,14 @@
 import { useState, useMemo, useEffect } from 'react';
-import { filamentPresets, printerProfiles } from '../data/seedData';
 import type { MaintenanceComponent } from '../data/seedData';
 import type { CalculatorState, JobMaterial } from '../utils/formulas';
 import { computeCosts } from '../utils/formulas';
 import { loadState, saveState, clearState, createDefaultState } from '../utils/persistence';
+import { seedProfiles } from '../utils/profiles';
+import type { ProfileSet } from '../utils/profiles';
 import { generateId } from '../utils/id';
 
-export const useCalculatorState = () => {
-  const [state, setState] = useState<CalculatorState>(loadState);
+export const useCalculatorState = (catalog: ProfileSet = seedProfiles) => {
+  const [state, setState] = useState<CalculatorState>(() => loadState(catalog));
 
   useEffect(() => {
     saveState(state);
@@ -15,7 +16,7 @@ export const useCalculatorState = () => {
 
   // Handle printer change
   const setPrinterId = (id: string) => {
-    const printer = printerProfiles[id];
+    const printer = catalog.printers[id];
     if (printer) {
       setState(prev => ({
         ...prev,
@@ -34,7 +35,7 @@ export const useCalculatorState = () => {
 
   // Job Material CRUD
   const addJobMaterial = () => {
-    const preset = filamentPresets['mat_pla'];
+    const preset = catalog.filaments['mat_pla'];
     const newMaterial: JobMaterial = {
       id: generateId(),
       filamentId: 'mat_pla',
@@ -54,7 +55,7 @@ export const useCalculatorState = () => {
         if (m.id === id) {
           const updated = { ...m, ...updates };
           if (updates.filamentId && updates.filamentId !== m.filamentId) {
-            const preset = filamentPresets[updates.filamentId];
+            const preset = catalog.filaments[updates.filamentId];
             if (preset) {
               updated.price_per_kg_thb = preset.price_per_kg_thb;
               updated.power_draw_multiplier = preset.power_draw_multiplier;
@@ -105,7 +106,7 @@ export const useCalculatorState = () => {
 
   const resetState = () => {
     clearState();
-    setState(createDefaultState());
+    setState(createDefaultState(catalog));
   };
 
   const replaceState = (next: CalculatorState) => {
