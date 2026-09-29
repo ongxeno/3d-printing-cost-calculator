@@ -89,7 +89,7 @@ function App() {
 
           {/* Right Column: Itemized Receipt (4/12) */}
           <div className="lg:col-span-4 relative">
-            <ItemizedReceiptSidebar computed={computed} />
+            <ItemizedReceiptSidebar computed={computed} state={state} />
           </div>
         </div>
       </div>

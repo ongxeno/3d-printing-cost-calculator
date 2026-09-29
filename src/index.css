@@ -88,3 +88,10 @@
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
+
+@media print {
+  body * { visibility: hidden; }
+  .print-receipt, .print-receipt * { visibility: visible; color: #000 !important; background: transparent !important; box-shadow: none !important; }
+  .print-receipt { position: absolute; left: 0; top: 0; width: 100%; border: none !important; }
+  .no-print { display: none !important; }
+}
