@@ -8,6 +8,7 @@ export interface JobMaterial {
   price_per_kg_thb: number;
   power_draw_multiplier: number;
   hardware_wear_multiplier: number;
+  waste_g: number;
 }
 
 export interface CalculatorState {
@@ -41,7 +42,13 @@ export const calculateTotalTime = (hours: number, mins: number) => {
 };
 
 export const calculateMaterialLineCost = (mat: JobMaterial): number =>
-  (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
+  (mat.price_per_kg_thb / 1000) * ((mat.weight_g || 0) + (mat.waste_g || 0));
+
+export const calculateWasteCost = (jobMaterials: JobMaterial[]): number =>
+  jobMaterials.reduce(
+    (total, mat) => total + (mat.price_per_kg_thb / 1000) * (mat.waste_g || 0),
+    0
+  );
 
 export const calculateMaterialCost = (
   jobMaterials: JobMaterial[]
@@ -125,6 +132,7 @@ export const calculateTotalComponentWear = (
 export interface CostBreakdown {
   totalTimeHours: number;
   materialCost: number;
+  wasteCost: number;
   multipliers: { power: number; wear: number };
   energyCost: number;
   laborCost: number;
@@ -141,6 +149,7 @@ export interface CostBreakdown {
 export const computeCosts = (state: CalculatorState): CostBreakdown => {
   const totalTimeHours = calculateTotalTime(state.printTimeHours, state.printTimeMins);
   const materialCost = calculateMaterialCost(state.jobMaterials);
+  const wasteCost = calculateWasteCost(state.jobMaterials);
   const multipliers = getActiveMultipliers(state.jobMaterials);
 
   const energyCost = calculateEnergyCost(
@@ -187,6 +196,7 @@ export const computeCosts = (state: CalculatorState): CostBreakdown => {
   return {
     totalTimeHours,
     materialCost,
+    wasteCost,
     multipliers,
     energyCost,
     laborCost,

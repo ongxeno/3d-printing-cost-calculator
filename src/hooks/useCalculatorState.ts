@@ -42,7 +42,8 @@ export const useCalculatorState = () => {
       role: 'Part',
       price_per_kg_thb: preset.price_per_kg_thb,
       power_draw_multiplier: preset.power_draw_multiplier,
-      hardware_wear_multiplier: preset.hardware_wear_multiplier
+      hardware_wear_multiplier: preset.hardware_wear_multiplier,
+      waste_g: 0
     };
     setState(prev => ({ ...prev, jobMaterials: [...prev.jobMaterials, newMaterial] }));
   };

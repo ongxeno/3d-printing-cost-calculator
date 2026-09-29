@@ -11,6 +11,7 @@ const mat = (overrides: Partial<JobMaterial> = {}): JobMaterial => ({
   price_per_kg_thb: 450,
   power_draw_multiplier: 1,
   hardware_wear_multiplier: 1,
+  waste_g: 0,
   ...overrides,
 });
 
@@ -34,6 +35,13 @@ describe('computeCosts', () => {
     expect(result.baseCost).toBeCloseTo(45, 6);
     expect(result.failureBufferCost).toBeCloseTo(0, 6);
     expect(result.grandTotal).toBeCloseTo(45, 6);
+  });
+
+  it('includes purge waste in the material cost and exposes it separately', () => {
+    const result = computeCosts(bareState({ jobMaterials: [mat({ weight_g: 100, waste_g: 20, price_per_kg_thb: 450 })] }));
+    expect(result.materialCost).toBeCloseTo(54, 6);
+    expect(result.wasteCost).toBeCloseTo(9, 6);
+    expect(result.grandTotal).toBeCloseTo(54, 6);
   });
 
   it('applies the failure buffer on top of the base cost', () => {

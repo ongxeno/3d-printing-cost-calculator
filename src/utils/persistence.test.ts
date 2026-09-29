@@ -59,6 +59,30 @@ describe('sanitizeState', () => {
     expect(result?.jobMaterials[0].price_per_kg_thb).toBe(1600);
     expect(result?.jobMaterials[0].hardware_wear_multiplier).toBe(5);
   });
+
+  it('defaults legacy materials without waste_g to 0', () => {
+    const result = sanitizeState({
+      ...createDefaultState(),
+      jobMaterials: [{ id: 'x', filamentId: 'mat_pla', weight_g: 10, role: 'Part' }],
+    });
+    expect(result?.jobMaterials[0].waste_g).toBe(0);
+  });
+
+  it('keeps a valid material waste_g', () => {
+    const result = sanitizeState({
+      ...createDefaultState(),
+      jobMaterials: [{ id: 'x', filamentId: 'mat_pla', weight_g: 10, role: 'Part', waste_g: 7 }],
+    });
+    expect(result?.jobMaterials[0].waste_g).toBe(7);
+  });
+
+  it('falls back to 0 for a negative material waste_g', () => {
+    const result = sanitizeState({
+      ...createDefaultState(),
+      jobMaterials: [{ id: 'x', filamentId: 'mat_pla', weight_g: 10, role: 'Part', waste_g: -3 }],
+    });
+    expect(result?.jobMaterials[0].waste_g).toBe(0);
+  });
 });
 
 describe('load/save/clear', () => {

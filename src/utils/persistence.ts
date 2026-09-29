@@ -29,6 +29,7 @@ const sanitizeJobMaterial = (raw: Record<string, unknown>): JobMaterial => {
     hardware_wear_multiplier: isNonNegativeFiniteNumber(raw.hardware_wear_multiplier)
       ? raw.hardware_wear_multiplier
       : preset ? preset.hardware_wear_multiplier : 1,
+    waste_g: isNonNegativeFiniteNumber(raw.waste_g) ? raw.waste_g : 0,
   };
 };
 

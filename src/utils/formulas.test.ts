@@ -1,7 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
   calculateTotalTime,
+  calculateMaterialLineCost,
   calculateMaterialCost,
+  calculateWasteCost,
   getActiveMultipliers,
   calculateEnergyCost,
   calculateLaborCost,
@@ -20,6 +22,7 @@ const mat = (overrides: Partial<JobMaterial> = {}): JobMaterial => ({
   price_per_kg_thb: 450,
   power_draw_multiplier: 1,
   hardware_wear_multiplier: 1,
+  waste_g: 0,
   ...overrides,
 });
 
@@ -34,6 +37,29 @@ describe('calculateTotalTime', () => {
 
   it('converts 1h15m to 1.25h', () => {
     expect(calculateTotalTime(1, 15)).toBeCloseTo(1.25, 6);
+  });
+});
+
+describe('calculateMaterialLineCost', () => {
+  it('includes purge waste in the line cost', () => {
+    const item = mat({ weight_g: 10, waste_g: 4, price_per_kg_thb: 450 });
+    expect(calculateMaterialLineCost(item)).toBeCloseTo(6.3, 6);
+  });
+
+  it('treats a missing waste_g as 0', () => {
+    const legacy = { ...mat({ weight_g: 10, price_per_kg_thb: 450 }), waste_g: undefined as unknown as number };
+    expect(calculateMaterialLineCost(legacy)).toBeCloseTo(4.5, 6);
+  });
+});
+
+describe('calculateWasteCost', () => {
+  it('prices only the waste grams', () => {
+    const items = [mat({ weight_g: 10, waste_g: 4, price_per_kg_thb: 450 })];
+    expect(calculateWasteCost(items)).toBeCloseTo(1.8, 6);
+  });
+
+  it('returns 0 for no materials', () => {
+    expect(calculateWasteCost([])).toBeCloseTo(0, 6);
   });
 });
 
