@@ -87,6 +87,16 @@ describe('toPlainText', () => {
     const text = toPlainText(unknown, computeCosts(unknown), printerName);
     expect(text).toContain('- Part: mat_unknown 100 g (+10 g waste)');
   });
+
+  it('adds quantity and per-unit lines when quantity is 4', () => {
+    const qtyState: CalculatorState = { ...state, quantity: 4, postTime: 5 };
+    const qtyCosts = computeCosts(qtyState);
+    const text = toPlainText(qtyState, qtyCosts, printerName);
+    const lines = text.split('\n');
+    expect(lines[lines.indexOf('Print time: 2h 30m') + 1]).toBe('Quantity: 4');
+    expect(lines[lines.length - 1]).toBe(`Price per unit: ${formatMoney(qtyCosts.unitSellingPrice)}`);
+    expect(lines[lines.length - 2]).toBe(`Cost per unit: ${formatMoney(qtyCosts.unitCost)}`);
+  });
 });
 
 describe('toCsv', () => {
@@ -106,6 +116,14 @@ describe('toCsv', () => {
       'Price,Profit,14.85',
     ].join('\n');
     expect(toCsv(state, costs)).toBe(expected);
+  });
+
+  it('appends per-unit rows when quantity is 4', () => {
+    const qtyState: CalculatorState = { ...state, quantity: 4, postTime: 5 };
+    const qtyCosts = computeCosts(qtyState);
+    const lines = toCsv(qtyState, qtyCosts).split('\n');
+    expect(lines[lines.length - 1]).toBe(`Per unit,Price per unit,${formatMoney(qtyCosts.unitSellingPrice)}`);
+    expect(lines[lines.length - 2]).toBe(`Per unit,Cost per unit,${formatMoney(qtyCosts.unitCost)}`);
   });
 
   it('escapes names containing commas or quotes', () => {

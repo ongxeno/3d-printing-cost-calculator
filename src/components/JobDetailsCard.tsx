@@ -7,6 +7,7 @@ import { Clock, Plus, Trash2, Layers } from 'lucide-react';
 interface JobDetailsCardProps {
   printTimeHours: number;
   printTimeMins: number;
+  quantity: number;
   jobMaterials: JobMaterial[];
   updateState: (updates: Partial<CalculatorState>) => void;
   addJobMaterial: () => void;
@@ -19,6 +20,7 @@ const roles = ['Part', 'Support Base', 'Support Interface', 'Prime Tower'];
 export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
   printTimeHours,
   printTimeMins,
+  quantity,
   jobMaterials,
   updateState,
   addJobMaterial,
@@ -34,7 +36,7 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
         <h2 className="text-xl font-semibold m-0">Job Details</h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-4 mb-6">
         <InputField
           label="Print Time (Hours)"
           value={printTimeHours}
@@ -46,6 +48,13 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
           value={printTimeMins}
           onChange={(val) => updateState({ printTimeMins: val })}
           suffix="mins"
+        />
+        <InputField
+          label="Quantity (units on plate)"
+          value={quantity}
+          min={1}
+          onChange={(val) => updateState({ quantity: Math.max(1, Math.floor(val)) })}
+          suffix="pcs"
         />
       </div>
 

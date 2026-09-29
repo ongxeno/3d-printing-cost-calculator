@@ -8,9 +8,11 @@ export const toPlainText = (state: CalculatorState, costs: CostBreakdown, printe
     'TrueCost Quote',
     `Printer: ${printerName}`,
     `Print time: ${state.printTimeHours}h ${state.printTimeMins}m`,
-    '',
-    'Materials',
   ];
+  if (costs.quantity > 1) {
+    lines.push(`Quantity: ${costs.quantity}`);
+  }
+  lines.push('', 'Materials');
   if (state.jobMaterials.length === 0) {
     lines.push('- (none)');
   } else {
@@ -34,6 +36,12 @@ export const toPlainText = (state: CalculatorState, costs: CostBreakdown, printe
     `Markup (${state.markupPercent}%): ${formatMoney(costs.profit)}`,
     `Suggested price: ${formatMoney(costs.sellingPrice)}`,
   );
+  if (costs.quantity > 1) {
+    lines.push(
+      `Cost per unit: ${formatMoney(costs.unitCost)}`,
+      `Price per unit: ${formatMoney(costs.unitSellingPrice)}`,
+    );
+  }
   return lines.join('\n');
 };
 
@@ -62,6 +70,10 @@ export const toCsv = (_state: CalculatorState, costs: CostBreakdown): string => 
   rows.push(`Cost,Total cost,${formatMoney(costs.grandTotal)}`);
   rows.push(`Price,Suggested price,${formatMoney(costs.sellingPrice)}`);
   rows.push(`Price,Profit,${formatMoney(costs.profit)}`);
+  if (costs.quantity > 1) {
+    rows.push(`Per unit,Cost per unit,${formatMoney(costs.unitCost)}`);
+    rows.push(`Per unit,Price per unit,${formatMoney(costs.unitSellingPrice)}`);
+  }
   return rows.join('\n');
 };
 

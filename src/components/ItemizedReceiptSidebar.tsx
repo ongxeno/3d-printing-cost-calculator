@@ -136,6 +136,20 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
             <span className="font-mono text-green-400">+{formatCurrency(computed.profit)}</span>
           </div>
         </div>
+
+        {computed.quantity > 1 && (
+          <div className="border-t border-border/50 pt-4 mt-2 space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-text font-medium">Cost per unit</span>
+              <span className="font-mono font-medium">{formatCurrency(computed.unitCost)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-primary font-semibold">Price per unit</span>
+              <span className="font-mono font-semibold text-primary">{formatCurrency(computed.unitSellingPrice)}</span>
+            </div>
+            <div className="text-xs text-text-muted">for {computed.quantity} units</div>
+          </div>
+        )}
       </div>
 
       <div className="no-print flex flex-wrap gap-2 border-t border-border/50 pt-4 mt-4">

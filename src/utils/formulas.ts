@@ -18,6 +18,7 @@ export interface CalculatorState {
   // Job Details
   printTimeHours: number;
   printTimeMins: number;
+  quantity: number;
   jobMaterials: JobMaterial[];
   
   // Local Economics
@@ -155,6 +156,10 @@ export interface CostBreakdown {
   grandTotal: number;
   sellingPrice: number;
   profit: number;
+  quantity: number;
+  unitCost: number;
+  unitSellingPrice: number;
+  unitProfit: number;
   materialsByRole: Record<string, number>;
   effectiveDrawWatts: number;
 }
@@ -172,10 +177,11 @@ export const computeCosts = (state: CalculatorState): CostBreakdown => {
     state.elecRate
   );
 
+  const quantity = Math.max(1, Math.floor(state.quantity || 1));
   const laborCost = calculateLaborCost(
     state.prepTime,
     state.setupTime,
-    state.postTime,
+    state.postTime * quantity,
     state.laborRate
   );
 
@@ -223,6 +229,10 @@ export const computeCosts = (state: CalculatorState): CostBreakdown => {
     grandTotal,
     sellingPrice,
     profit,
+    quantity,
+    unitCost: grandTotal / quantity,
+    unitSellingPrice: sellingPrice / quantity,
+    unitProfit: profit / quantity,
     materialsByRole,
     effectiveDrawWatts: state.basePowerDraw * multipliers.power
   };

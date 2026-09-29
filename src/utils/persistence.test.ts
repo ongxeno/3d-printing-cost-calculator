@@ -86,6 +86,15 @@ describe('sanitizeState', () => {
     expect(result?.jobMaterials[0].waste_g).toBe(7);
   });
 
+  it('defaults quantity for legacy states and invalid values', () => {
+    const { quantity: _quantity, ...legacy } = createDefaultState();
+    expect(sanitizeState(legacy)?.quantity).toBe(1);
+    expect(sanitizeState({ ...createDefaultState(), quantity: 6.9 })?.quantity).toBe(6);
+    expect(sanitizeState({ ...createDefaultState(), quantity: 0 })?.quantity).toBe(1);
+    expect(sanitizeState({ ...createDefaultState(), quantity: -2 })?.quantity).toBe(1);
+    expect(sanitizeState({ ...createDefaultState(), quantity: 'x' as unknown })?.quantity).toBe(1);
+  });
+
   it('falls back to 0 for a negative material waste_g', () => {
     const result = sanitizeState({
       ...createDefaultState(),
