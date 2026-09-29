@@ -2,59 +2,15 @@ import { useState, useMemo, useEffect } from 'react';
 import { filamentPresets, printerProfiles } from '../data/seedData';
 import type { MaintenanceComponent } from '../data/seedData';
 import type { CalculatorState, JobMaterial } from '../utils/formulas';
-import {
-  calculateTotalTime,
-  calculateMaterialCost,
-  getActiveMultipliers,
-  calculateEnergyCost,
-  calculateLaborCost,
-  calculateBaseHardwareDepreciation,
-  calculateTotalComponentWear,
-  calculateComponentWear
-} from '../utils/formulas';
-
-const generateId = () => Math.random().toString(36).substring(2, 9);
+import { computeCosts } from '../utils/formulas';
+import { loadState, saveState, clearState, createDefaultState } from '../utils/persistence';
+import { generateId } from '../utils/id';
 
 export const useCalculatorState = () => {
-  // Default to the first printer profile
-  const initialPrinter = printerProfiles['bambu_x2d_combo'] || Object.values(printerProfiles)[0];
-  
-  const [state, setState] = useState<CalculatorState>(() => {
-    try {
-      const saved = localStorage.getItem('3dprint_calculator_state');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (printerProfiles[parsed.printerId]) {
-          return parsed;
-        }
-      }
-    } catch (e) {
-      console.error("Failed to parse local storage data", e);
-    }
-    return {
-      printerId: initialPrinter.id,
-      
-      printTimeHours: 0,
-      printTimeMins: 0,
-      jobMaterials: [],
-      
-      elecRate: 5.0, // THB/kWh Default
-      laborRate: 150, // THB/hr Default
-      
-      prepTime: 5,
-      setupTime: 5,
-      postTime: 5,
-      failureRate: 5, // 5% default
-      
-      printerPrice: initialPrinter.purchase_price_thb,
-      printerLifespan: initialPrinter.estimated_lifespan_hours,
-      basePowerDraw: initialPrinter.base_power_draw_watts,
-      maintenanceParts: JSON.parse(JSON.stringify(initialPrinter.maintenance_components)), // deep copy
-    };
-  });
+  const [state, setState] = useState<CalculatorState>(loadState);
 
   useEffect(() => {
-    localStorage.setItem('3dprint_calculator_state', JSON.stringify(state));
+    saveState(state);
   }, [state]);
 
   // Handle printer change
@@ -67,7 +23,7 @@ export const useCalculatorState = () => {
         printerPrice: printer.purchase_price_thb,
         printerLifespan: printer.estimated_lifespan_hours,
         basePowerDraw: printer.base_power_draw_watts,
-        maintenanceParts: JSON.parse(JSON.stringify(printer.maintenance_components))
+        maintenanceParts: structuredClone(printer.maintenance_components)
       }));
     }
   };
@@ -147,90 +103,11 @@ export const useCalculatorState = () => {
   };
 
   const resetState = () => {
-    localStorage.removeItem('3dprint_calculator_state');
-    setState({
-      printerId: initialPrinter.id,
-      printTimeHours: 0,
-      printTimeMins: 0,
-      jobMaterials: [],
-      elecRate: 5.0,
-      laborRate: 150,
-      prepTime: 5,
-      setupTime: 5,
-      postTime: 5,
-      failureRate: 5,
-      printerPrice: initialPrinter.purchase_price_thb,
-      printerLifespan: initialPrinter.estimated_lifespan_hours,
-      basePowerDraw: initialPrinter.base_power_draw_watts,
-      maintenanceParts: JSON.parse(JSON.stringify(initialPrinter.maintenance_components)),
-    });
+    clearState();
+    setState(createDefaultState());
   };
 
-  // Computed Values
-  const computed = useMemo(() => {
-    const totalTimeHours = calculateTotalTime(state.printTimeHours, state.printTimeMins);
-    const materialCost = calculateMaterialCost(state.jobMaterials);
-    const multipliers = getActiveMultipliers(state.jobMaterials);
-    
-    const energyCost = calculateEnergyCost(
-      state.basePowerDraw,
-      multipliers.power,
-      totalTimeHours,
-      state.elecRate
-    );
-
-    const laborCost = calculateLaborCost(
-      state.prepTime,
-      state.setupTime,
-      state.postTime,
-      state.laborRate
-    );
-
-    const baseHardwareDepreciation = calculateBaseHardwareDepreciation(
-      state.printerPrice,
-      state.printerLifespan,
-      totalTimeHours
-    );
-
-    const totalComponentWear = calculateTotalComponentWear(
-      state.maintenanceParts,
-      totalTimeHours,
-      multipliers.wear
-    );
-    
-    // Component Wear detailed breakdown for UI
-    const componentWearDetails = state.maintenanceParts.map(part => ({
-      name: part.name,
-      cost: calculateComponentWear(part, totalTimeHours, multipliers.wear)
-    }));
-
-    const baseCost = materialCost + energyCost + laborCost + baseHardwareDepreciation + totalComponentWear;
-    const failureBufferCost = baseCost * (state.failureRate / 100);
-    const grandTotal = baseCost + failureBufferCost;
-    
-    // Material breakdown by role (for Receipt)
-    const materialsByRole: Record<string, number> = {};
-    state.jobMaterials.forEach(mat => {
-      const cost = (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
-      materialsByRole[mat.role] = (materialsByRole[mat.role] || 0) + cost;
-    });
-
-    return {
-      totalTimeHours,
-      materialCost,
-      multipliers,
-      energyCost,
-      laborCost,
-      baseHardwareDepreciation,
-      totalComponentWear,
-      componentWearDetails,
-      baseCost,
-      failureBufferCost,
-      grandTotal,
-      materialsByRole,
-      effectiveDrawWatts: state.basePowerDraw * multipliers.power
-    };
-  }, [state]);
+  const computed = useMemo(() => computeCosts(state), [state]);
 
   return {
     state,

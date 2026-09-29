@@ -1,5 +1,6 @@
 import React from 'react';
 import { InputField } from './InputField';
+import type { CalculatorState } from '../utils/formulas';
 import { BadgeDollarSign, UserCog } from 'lucide-react';
 
 interface EconomicsCardProps {
@@ -9,7 +10,7 @@ interface EconomicsCardProps {
   setupTime: number;
   postTime: number;
   failureRate: number;
-  updateState: (updates: any) => void;
+  updateState: (updates: Partial<CalculatorState>) => void;
 }
 
 export const EconomicsCard: React.FC<EconomicsCardProps> = ({

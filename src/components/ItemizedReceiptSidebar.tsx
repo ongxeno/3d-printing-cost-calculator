@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Receipt, ChevronDown, ChevronUp } from 'lucide-react';
+import type { CostBreakdown } from '../utils/formulas';
 
 interface ItemizedReceiptSidebarProps {
-  computed: any;
+  computed: CostBreakdown;
 }
 
 const formatCurrency = (val: number) => 
@@ -33,7 +34,7 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
             {Object.entries(computed.materialsByRole).map(([role, cost]) => (
               <div key={role} className="text-xs text-text-muted mt-1 ml-2 flex justify-between w-32">
                 <span>{role}:</span>
-                <span className="font-mono">{formatCurrency(cost as number)}</span>
+                <span className="font-mono">{formatCurrency(cost)}</span>
               </div>
             ))}
           </div>
@@ -73,7 +74,7 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
           
           {isWearExpanded && (
             <div className="p-3 bg-[#0f1115] max-h-48 overflow-y-auto space-y-2 border-t border-border">
-              {computed.componentWearDetails.map((detail: any, i: number) => (
+              {computed.componentWearDetails.map((detail, i) => (
                 <div key={i} className="flex justify-between items-center text-xs">
                   <span className="text-text-muted truncate mr-2" title={detail.name}>{detail.name}</span>
                   <span className="font-mono text-text">{formatCurrency(detail.cost)}</span>

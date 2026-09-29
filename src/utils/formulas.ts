@@ -40,11 +40,14 @@ export const calculateTotalTime = (hours: number, mins: number) => {
   return hours + (mins / 60);
 };
 
+export const calculateMaterialLineCost = (mat: JobMaterial): number =>
+  (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
+
 export const calculateMaterialCost = (
   jobMaterials: JobMaterial[]
 ) => {
   return jobMaterials.reduce((total, mat) => {
-    return total + (mat.price_per_kg_thb / 1000) * (mat.weight_g || 0);
+    return total + calculateMaterialLineCost(mat);
   }, 0);
 };
 
@@ -117,4 +120,83 @@ export const calculateTotalComponentWear = (
   return maintenanceParts.reduce((total, part) => {
     return total + calculateComponentWear(part, totalTimeHours, activeWearMultiplier);
   }, 0);
+};
+
+export interface CostBreakdown {
+  totalTimeHours: number;
+  materialCost: number;
+  multipliers: { power: number; wear: number };
+  energyCost: number;
+  laborCost: number;
+  baseHardwareDepreciation: number;
+  totalComponentWear: number;
+  componentWearDetails: { name: string; cost: number }[];
+  baseCost: number;
+  failureBufferCost: number;
+  grandTotal: number;
+  materialsByRole: Record<string, number>;
+  effectiveDrawWatts: number;
+}
+
+export const computeCosts = (state: CalculatorState): CostBreakdown => {
+  const totalTimeHours = calculateTotalTime(state.printTimeHours, state.printTimeMins);
+  const materialCost = calculateMaterialCost(state.jobMaterials);
+  const multipliers = getActiveMultipliers(state.jobMaterials);
+
+  const energyCost = calculateEnergyCost(
+    state.basePowerDraw,
+    multipliers.power,
+    totalTimeHours,
+    state.elecRate
+  );
+
+  const laborCost = calculateLaborCost(
+    state.prepTime,
+    state.setupTime,
+    state.postTime,
+    state.laborRate
+  );
+
+  const baseHardwareDepreciation = calculateBaseHardwareDepreciation(
+    state.printerPrice,
+    state.printerLifespan,
+    totalTimeHours
+  );
+
+  const totalComponentWear = calculateTotalComponentWear(
+    state.maintenanceParts,
+    totalTimeHours,
+    multipliers.wear
+  );
+
+  const componentWearDetails = state.maintenanceParts.map(part => ({
+    name: part.name,
+    cost: calculateComponentWear(part, totalTimeHours, multipliers.wear)
+  }));
+
+  const baseCost = materialCost + energyCost + laborCost + baseHardwareDepreciation + totalComponentWear;
+  const failureBufferCost = baseCost * (state.failureRate / 100);
+  const grandTotal = baseCost + failureBufferCost;
+
+  const materialsByRole: Record<string, number> = {};
+  state.jobMaterials.forEach(mat => {
+    const cost = calculateMaterialLineCost(mat);
+    materialsByRole[mat.role] = (materialsByRole[mat.role] || 0) + cost;
+  });
+
+  return {
+    totalTimeHours,
+    materialCost,
+    multipliers,
+    energyCost,
+    laborCost,
+    baseHardwareDepreciation,
+    totalComponentWear,
+    componentWearDetails,
+    baseCost,
+    failureBufferCost,
+    grandTotal,
+    materialsByRole,
+    effectiveDrawWatts: state.basePowerDraw * multipliers.power
+  };
 };
