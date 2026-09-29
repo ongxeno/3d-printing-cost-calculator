@@ -4,6 +4,7 @@ import {
   SCHEMA_VERSION,
   createDefaultState,
   sanitizeState,
+  sanitizeStateOrFallbackPrinter,
   loadState,
   saveState,
   clearState,
@@ -171,5 +172,32 @@ describe('load/save/clear', () => {
     saveState(createDefaultState());
     clearState();
     expect(STORAGE_KEY in storage.store).toBe(false);
+  });
+});
+
+describe('sanitizeStateOrFallbackPrinter', () => {
+  it('returns the same result as sanitizeState for a known printer', () => {
+    const state = { ...createDefaultState(), laborRate: 222 };
+    expect(sanitizeStateOrFallbackPrinter(state)).toEqual(sanitizeState(state));
+  });
+
+  it('falls back to the default printer for an unknown printer id, keeping the job numbers', () => {
+    const result = sanitizeStateOrFallbackPrinter({
+      ...createDefaultState(),
+      printerId: 'custom_gone',
+      printerPrice: 12345,
+      laborRate: 222,
+      quantity: 3,
+    });
+    expect(result?.printerId).toBe('bambu_x2d_combo');
+    expect(result?.printerPrice).toBe(12345);
+    expect(result?.laborRate).toBe(222);
+    expect(result?.quantity).toBe(3);
+  });
+
+  it('still rejects non-objects and non-string printer ids', () => {
+    expect(sanitizeStateOrFallbackPrinter(null)).toBeNull();
+    expect(sanitizeStateOrFallbackPrinter(42)).toBeNull();
+    expect(sanitizeStateOrFallbackPrinter({ ...createDefaultState(), printerId: 42 })).toBeNull();
   });
 });

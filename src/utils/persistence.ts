@@ -116,6 +116,14 @@ export const sanitizeState = (raw: unknown, profiles: ProfileSet = seedProfiles)
   return state;
 };
 
+// Like sanitizeState, but a state whose printer id is unknown (e.g. a deleted custom printer)
+// falls back to the default printer instead of being rejected, keeping all its own numbers.
+export const sanitizeStateOrFallbackPrinter = (raw: unknown, profiles: ProfileSet = seedProfiles): CalculatorState | null => {
+  const state = sanitizeState(raw, profiles);
+  if (state !== null || !isPlainObject(raw) || typeof raw.printerId !== 'string') return state;
+  return sanitizeState({ ...raw, printerId: createDefaultState(profiles).printerId }, profiles);
+};
+
 export const loadState = (profiles: ProfileSet = seedProfiles): CalculatorState => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);

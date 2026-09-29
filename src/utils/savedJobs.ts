@@ -1,6 +1,6 @@
 import type { CalculatorState } from './formulas';
 import { generateId } from './id';
-import { createDefaultState, sanitizeState } from './persistence';
+import { sanitizeStateOrFallbackPrinter } from './persistence';
 import { seedProfiles } from './profiles';
 import type { ProfileSet } from './profiles';
 
@@ -80,10 +80,7 @@ export const loadSavedJobs = (profiles: ProfileSet = seedProfiles): SavedJob[] =
       if (typeof item.id !== 'string') continue;
       const name = typeof item.name === 'string' ? item.name : 'Untitled job';
       const savedAt = typeof item.savedAt === 'string' ? item.savedAt : new Date(0).toISOString();
-      let state = sanitizeState(item.state, profiles);
-      if (state === null && isPlainObject(item.state) && typeof item.state.printerId === 'string') {
-        state = sanitizeState({ ...item.state, printerId: createDefaultState(profiles).printerId }, profiles);
-      }
+      const state = sanitizeStateOrFallbackPrinter(item.state, profiles);
       if (state === null) continue;
       jobs.push({ id: item.id, name, savedAt, state });
     }

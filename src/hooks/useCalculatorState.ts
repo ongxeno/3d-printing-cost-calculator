@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import type { MaintenanceComponent } from '../data/seedData';
 import type { CalculatorState, JobMaterial } from '../utils/formulas';
 import { computeCosts } from '../utils/formulas';
-import { loadState, saveState, clearState, createDefaultState } from '../utils/persistence';
+import { loadState, saveState, clearState, createDefaultState, sanitizeStateOrFallbackPrinter } from '../utils/persistence';
 import { seedProfiles } from '../utils/profiles';
 import type { ProfileSet } from '../utils/profiles';
 import { generateId } from '../utils/id';
@@ -110,7 +110,8 @@ export const useCalculatorState = (catalog: ProfileSet = seedProfiles) => {
   };
 
   const replaceState = (next: CalculatorState) => {
-    setState(next);
+    const clean = sanitizeStateOrFallbackPrinter(next, catalog);
+    if (clean) setState(clean);
   };
 
   const computed = useMemo(() => computeCosts(state), [state]);
