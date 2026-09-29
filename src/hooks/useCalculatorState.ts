@@ -108,11 +108,16 @@ export const useCalculatorState = () => {
     setState(createDefaultState());
   };
 
+  const replaceState = (next: CalculatorState) => {
+    setState(next);
+  };
+
   const computed = useMemo(() => computeCosts(state), [state]);
 
   return {
     state,
     resetState,
+    replaceState,
     setPrinterId,
     updateState,
     addJobMaterial,
