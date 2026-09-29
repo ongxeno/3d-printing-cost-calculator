@@ -54,9 +54,10 @@ function App() {
               onChange={setPrinterId} 
             />
             
-            <JobDetailsCard 
+            <JobDetailsCard
               printTimeHours={state.printTimeHours}
               printTimeMins={state.printTimeMins}
+              quantity={state.quantity}
               jobMaterials={state.jobMaterials}
               updateState={updateState}
               addJobMaterial={addJobMaterial}

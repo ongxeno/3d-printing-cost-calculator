@@ -79,7 +79,7 @@ export const EconomicsCard: React.FC<EconomicsCardProps> = ({
             suffix="mins"
           />
           <InputField
-            label="Post-Processing"
+            label="Post-Processing (per unit)"
             value={postTime}
             onChange={(val) => updateState({ postTime: val })}
             suffix="mins"

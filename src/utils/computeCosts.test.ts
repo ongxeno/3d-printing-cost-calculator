@@ -106,6 +106,42 @@ describe('computeCosts', () => {
     expect(result.effectiveDrawWatts).toBeCloseTo(340, 6);
   });
 
+  it('scales post-processing time with quantity 1', () => {
+    const result = computeCosts(bareState({
+      laborRate: 60,
+      prepTime: 10,
+      setupTime: 5,
+      postTime: 5,
+      markupPercent: 30,
+      failureRate: 0,
+      quantity: 1,
+      jobMaterials: [mat()],
+    }));
+    expect(result.laborCost).toBeCloseTo(20, 6);
+    expect(result.grandTotal).toBeCloseTo(65, 6);
+    expect(result.unitCost).toBeCloseTo(65, 6);
+    expect(result.quantity).toBe(1);
+  });
+
+  it('scales post-processing time per unit at quantity 4', () => {
+    const result = computeCosts(bareState({
+      laborRate: 60,
+      prepTime: 10,
+      setupTime: 5,
+      postTime: 5,
+      markupPercent: 30,
+      failureRate: 0,
+      quantity: 4,
+      jobMaterials: [mat()],
+    }));
+    expect(result.laborCost).toBeCloseTo(35, 6);
+    expect(result.grandTotal).toBeCloseTo(80, 6);
+    expect(result.sellingPrice).toBeCloseTo(104, 6);
+    expect(result.unitCost).toBeCloseTo(20, 6);
+    expect(result.unitSellingPrice).toBeCloseTo(26, 6);
+    expect(result.unitProfit).toBeCloseTo(6, 6);
+  });
+
   it('applies weight-weighted multipliers across the full job', () => {
     const state = bareState({
       basePowerDraw: 250,

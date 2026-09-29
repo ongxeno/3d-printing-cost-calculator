@@ -48,6 +48,7 @@ export const createDefaultState = (): CalculatorState => {
     printerId: printer.id,
     printTimeHours: 0,
     printTimeMins: 0,
+    quantity: 1,
     jobMaterials: [],
     elecRate: 5,
     laborRate: 150,
@@ -99,6 +100,11 @@ export const sanitizeState = (raw: unknown): CalculatorState | null => {
       state[field] = value;
     }
   });
+
+  const rawQuantity = raw.quantity;
+  state.quantity = typeof rawQuantity === 'number' && Number.isFinite(rawQuantity) && rawQuantity >= 1
+    ? Math.floor(rawQuantity)
+    : 1;
 
   const rawMaterials = raw.jobMaterials;
   state.jobMaterials = Array.isArray(rawMaterials)
