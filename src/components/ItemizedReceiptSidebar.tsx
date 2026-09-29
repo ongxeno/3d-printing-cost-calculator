@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
-import { Receipt, ChevronDown, ChevronUp } from 'lucide-react';
-import type { CostBreakdown } from '../utils/formulas';
+import { Receipt, ChevronDown, ChevronUp, Copy, Download, Printer } from 'lucide-react';
+import type { CostBreakdown, CalculatorState } from '../utils/formulas';
+import { printerProfiles } from '../data/seedData';
+import { toPlainText, toCsv, downloadTextFile } from '../utils/exportQuote';
 
 interface ItemizedReceiptSidebarProps {
   computed: CostBreakdown;
+  state: CalculatorState;
 }
 
 const formatCurrency = (val: number) => 
   new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(val);
 
-export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ computed }) => {
+export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ computed, state }) => {
   const [isWearExpanded, setIsWearExpanded] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
+
+  const printerName = printerProfiles[state.printerId]?.name ?? state.printerId;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(toPlainText(state, computed, printerName));
+      setCopyStatus('copied');
+    } catch {
+      setCopyStatus('failed');
+    }
+    setTimeout(() => setCopyStatus('idle'), 2000);
+  };
+
+  const copyLabel = copyStatus === 'copied' ? 'Copied!' : copyStatus === 'failed' ? 'Copy failed' : 'Copy quote';
 
   return (
-    <div className="glass-card p-6 sticky top-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+    <div className="glass-card p-6 sticky top-6 animate-fade-in print-receipt" style={{ animationDelay: '0.6s' }}>
       <div className="flex items-center gap-3 mb-6 pb-6 border-b border-border">
         <div className="p-3 bg-primary/20 rounded-xl text-primary">
           <Receipt size={28} />
@@ -118,6 +136,22 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
             <span className="font-mono text-green-400">+{formatCurrency(computed.profit)}</span>
           </div>
         </div>
+      </div>
+
+      <div className="no-print flex flex-wrap gap-2 border-t border-border/50 pt-4 mt-4">
+        <button type="button" className="btn-secondary text-sm flex items-center gap-2" onClick={handleCopy}>
+          <Copy size={16} /> {copyLabel}
+        </button>
+        <button
+          type="button"
+          className="btn-secondary text-sm flex items-center gap-2"
+          onClick={() => downloadTextFile(`truecost-quote-${new Date().toISOString().slice(0, 10)}.csv`, toCsv(state, computed), 'text/csv;charset=utf-8')}
+        >
+          <Download size={16} /> CSV
+        </button>
+        <button type="button" className="btn-secondary text-sm flex items-center gap-2" onClick={() => window.print()}>
+          <Printer size={16} /> Print
+        </button>
       </div>
     </div>
   );
