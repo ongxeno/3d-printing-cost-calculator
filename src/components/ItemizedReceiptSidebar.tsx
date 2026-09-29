@@ -39,7 +39,7 @@ export const ItemizedReceiptSidebar: React.FC<ItemizedReceiptSidebarProps> = ({ 
             ))}
             {computed.wasteCost > 0 && (
               <div className="text-xs text-text-muted mt-1 ml-2 flex justify-between w-32">
-                <span>Purge / waste (incl.)</span>
+                <span>Waste (incl.):</span>
                 <span className="font-mono">{formatCurrency(computed.wasteCost)}</span>
               </div>
             )}
