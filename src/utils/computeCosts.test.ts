@@ -105,4 +105,26 @@ describe('computeCosts', () => {
     expect(result.componentWearDetails).toEqual([{ name: 'Nozzle', cost: expect.closeTo(8, 6) }]);
     expect(result.effectiveDrawWatts).toBeCloseTo(340, 6);
   });
+
+  it('applies weight-weighted multipliers across the full job', () => {
+    const state = bareState({
+      basePowerDraw: 250,
+      printTimeHours: 10,
+      printTimeMins: 0,
+      elecRate: 5,
+      maintenanceParts: [{
+        id: 'p', name: 'Nozzle',
+        replacement_cost_thb: 1000, replacement_lifespan_hours: 100,
+        periodic_maintenance_cost_thb: 0, periodic_maintenance_interval_hours: 0,
+      }],
+      jobMaterials: [
+        mat({ id: 'a', weight_g: 500 }),
+        mat({ id: 'b', filamentId: 'mat_pa_cf', weight_g: 5, price_per_kg_thb: 1600, power_draw_multiplier: 1.2, hardware_wear_multiplier: 5 }),
+      ],
+    });
+    const result = computeCosts(state);
+    expect(result.multipliers.wear).toBeCloseTo(525 / 505, 6);
+    expect(result.totalComponentWear).toBeCloseTo(100 * (525 / 505), 6);
+    expect(result.effectiveDrawWatts).toBeCloseTo(250 * (506 / 505), 6);
+  });
 });

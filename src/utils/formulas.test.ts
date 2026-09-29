@@ -93,12 +93,44 @@ describe('getActiveMultipliers', () => {
     expect(getActiveMultipliers([])).toEqual({ power: 1, wear: 1 });
   });
 
-  it('takes the max multiplier across materials', () => {
+  it('uses the weight-weighted average of the power multiplier', () => {
     const items = [
-      mat({ id: 'm1', power_draw_multiplier: 1.0, hardware_wear_multiplier: 1.0 }),
-      mat({ id: 'm2', power_draw_multiplier: 1.2, hardware_wear_multiplier: 5.0 }),
+      mat({ id: 'm1', weight_g: 100, power_draw_multiplier: 1.0, hardware_wear_multiplier: 1.0 }),
+      mat({ id: 'm2', weight_g: 100, power_draw_multiplier: 1.36, hardware_wear_multiplier: 1.0 }),
     ];
-    expect(getActiveMultipliers(items)).toEqual({ power: 1.2, wear: 5 });
+    const result = getActiveMultipliers(items);
+    expect(result.power).toBeCloseTo(1.18, 6);
+  });
+
+  it('uses the weight-weighted average of the wear multiplier', () => {
+    const items = [
+      mat({ id: 'm1', weight_g: 500, power_draw_multiplier: 1.0, hardware_wear_multiplier: 1.0 }),
+      mat({ id: 'm2', weight_g: 5, power_draw_multiplier: 1.2, hardware_wear_multiplier: 5.0 }),
+    ];
+    const result = getActiveMultipliers(items);
+    expect(result.wear).toBeCloseTo(525 / 505, 6);
+  });
+
+  it('keeps a single material unchanged', () => {
+    const items = [mat({ weight_g: 100, power_draw_multiplier: 1.2, hardware_wear_multiplier: 5 })];
+    const result = getActiveMultipliers(items);
+    expect(result.power).toBeCloseTo(1.2, 6);
+    expect(result.wear).toBeCloseTo(5, 6);
+  });
+
+  it('counts waste grams toward the weight', () => {
+    const items = [
+      mat({ id: 'm1', weight_g: 100, waste_g: 0, power_draw_multiplier: 1.0, hardware_wear_multiplier: 1.0 }),
+      mat({ id: 'm2', weight_g: 0, waste_g: 100, power_draw_multiplier: 1.2, hardware_wear_multiplier: 5.0 }),
+    ];
+    const result = getActiveMultipliers(items);
+    expect(result.power).toBeCloseTo(1.1, 6);
+    expect(result.wear).toBeCloseTo(3, 6);
+  });
+
+  it('returns 1/1 when materials are present but total weight is zero', () => {
+    const items = [mat({ weight_g: 0, waste_g: 0, power_draw_multiplier: 1.2, hardware_wear_multiplier: 5 })];
+    expect(getActiveMultipliers(items)).toEqual({ power: 1, wear: 1 });
   });
 
   it('floors multipliers at 1', () => {

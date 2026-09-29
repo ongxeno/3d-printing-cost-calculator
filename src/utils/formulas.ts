@@ -62,19 +62,26 @@ export const calculateMaterialCost = (
 export const getActiveMultipliers = (
   jobMaterials: JobMaterial[]
 ) => {
-  if (jobMaterials.length === 0) {
+  const totalWeight = jobMaterials.reduce(
+    (sum, mat) => sum + (mat.weight_g || 0) + (mat.waste_g || 0),
+    0
+  );
+
+  if (jobMaterials.length === 0 || totalWeight <= 0) {
     return { power: 1, wear: 1 };
   }
-  
-  let maxPower = 1;
-  let maxWear = 1;
 
-  jobMaterials.forEach(mat => {
-    if (mat.power_draw_multiplier > maxPower) maxPower = mat.power_draw_multiplier;
-    if (mat.hardware_wear_multiplier > maxWear) maxWear = mat.hardware_wear_multiplier;
-  });
+  const weightedPower = jobMaterials.reduce(
+    (sum, mat) => sum + ((mat.weight_g || 0) + (mat.waste_g || 0)) * mat.power_draw_multiplier,
+    0
+  ) / totalWeight;
 
-  return { power: maxPower, wear: maxWear };
+  const weightedWear = jobMaterials.reduce(
+    (sum, mat) => sum + ((mat.weight_g || 0) + (mat.waste_g || 0)) * mat.hardware_wear_multiplier,
+    0
+  ) / totalWeight;
+
+  return { power: Math.max(1, weightedPower), wear: Math.max(1, weightedWear) };
 };
 
 export const calculateEnergyCost = (
