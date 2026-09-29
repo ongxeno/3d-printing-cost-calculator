@@ -1,6 +1,8 @@
 import type { CalculatorState } from './formulas';
 import { generateId } from './id';
-import { sanitizeState } from './persistence';
+import { createDefaultState, sanitizeState } from './persistence';
+import { seedProfiles } from './profiles';
+import type { ProfileSet } from './profiles';
 
 export interface SavedJob {
   id: string;
@@ -64,7 +66,7 @@ export const persistSavedJobs = (jobs: SavedJob[]): void => {
   }
 };
 
-export const loadSavedJobs = (): SavedJob[] => {
+export const loadSavedJobs = (profiles: ProfileSet = seedProfiles): SavedJob[] => {
   try {
     const saved = localStorage.getItem(SAVED_JOBS_KEY);
     if (saved === null) return [];
@@ -78,7 +80,10 @@ export const loadSavedJobs = (): SavedJob[] => {
       if (typeof item.id !== 'string') continue;
       const name = typeof item.name === 'string' ? item.name : 'Untitled job';
       const savedAt = typeof item.savedAt === 'string' ? item.savedAt : new Date(0).toISOString();
-      const state = sanitizeState(item.state);
+      let state = sanitizeState(item.state, profiles);
+      if (state === null && isPlainObject(item.state) && typeof item.state.printerId === 'string') {
+        state = sanitizeState({ ...item.state, printerId: createDefaultState(profiles).printerId }, profiles);
+      }
       if (state === null) continue;
       jobs.push({ id: item.id, name, savedAt, state });
     }

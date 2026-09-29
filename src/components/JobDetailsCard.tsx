@@ -1,6 +1,7 @@
 import React from 'react';
 import type { CalculatorState, JobMaterial } from '../utils/formulas';
-import { filamentPresets } from '../data/seedData';
+import type { FilamentPreset } from '../data/seedData';
+import { isCustomId } from '../utils/profiles';
 import { InputField } from './InputField';
 import { Clock, Plus, Trash2, Layers } from 'lucide-react';
 
@@ -13,9 +14,14 @@ interface JobDetailsCardProps {
   addJobMaterial: () => void;
   updateJobMaterial: (id: string, updates: Partial<JobMaterial>) => void;
   removeJobMaterial: (id: string) => void;
+  filaments: Record<string, FilamentPreset>;
+  onSaveCustomFilament: (mat: JobMaterial, name: string) => void;
+  onDeleteCustomFilament: (id: string) => void;
 }
 
 const roles = ['Part', 'Support Base', 'Support Interface', 'Prime Tower'];
+
+const secondaryBtn = 'text-xs px-3 py-1.5 rounded-md border border-border bg-surface-hover/50 text-text-muted hover:text-text hover:border-primary/40 transition-colors';
 
 export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
   printTimeHours,
@@ -25,8 +31,26 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
   updateState,
   addJobMaterial,
   updateJobMaterial,
-  removeJobMaterial
+  removeJobMaterial,
+  filaments,
+  onSaveCustomFilament,
+  onDeleteCustomFilament
 }) => {
+  const builtInFilaments = Object.values(filaments).filter(fil => !isCustomId(fil.id));
+  const customFilaments = Object.values(filaments).filter(fil => isCustomId(fil.id));
+
+  const handleSaveCustomFilament = (mat: JobMaterial) => {
+    const currentName = filaments[mat.filamentId]?.name ?? mat.filamentId;
+    const name = window.prompt('Name for the custom filament', `${currentName} (custom)`);
+    if (name && name.trim()) onSaveCustomFilament(mat, name);
+  };
+
+  const handleDeleteCustomFilament = (mat: JobMaterial) => {
+    if (window.confirm('Delete this custom filament?')) {
+      onDeleteCustomFilament(mat.filamentId);
+    }
+  };
+
   return (
     <div className="glass-card p-6 animate-slide-down" style={{ animationDelay: '0.2s' }}>
       <div className="flex items-center gap-3 mb-6">
@@ -94,9 +118,21 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
                     onChange={(e) => updateJobMaterial(mat.id, { filamentId: e.target.value })}
                     className="input-field py-2 truncate"
                   >
-                    {Object.values(filamentPresets).map(fil => (
-                      <option key={fil.id} value={fil.id} className="bg-surface">{fil.name}</option>
-                    ))}
+                    {!(mat.filamentId in filaments) && (
+                      <option value={mat.filamentId} className="bg-surface">Custom (removed)</option>
+                    )}
+                    <optgroup label="Built-in">
+                      {builtInFilaments.map(fil => (
+                        <option key={fil.id} value={fil.id} className="bg-surface">{fil.name}</option>
+                      ))}
+                    </optgroup>
+                    {customFilaments.length > 0 && (
+                      <optgroup label="Custom">
+                        {customFilaments.map(fil => (
+                          <option key={fil.id} value={fil.id} className="bg-surface">{fil.name}</option>
+                        ))}
+                      </optgroup>
+                    )}
                   </select>
                 </div>
                 <div className="w-24">
@@ -146,6 +182,16 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
                     suffix="g"
                   />
                 </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => handleSaveCustomFilament(mat)} className={secondaryBtn}>
+                  Save as custom filament…
+                </button>
+                {isCustomId(mat.filamentId) && mat.filamentId in filaments && (
+                  <button type="button" onClick={() => handleDeleteCustomFilament(mat)} className={secondaryBtn}>
+                    Delete custom filament
+                  </button>
+                )}
               </div>
             </div>
           ))}

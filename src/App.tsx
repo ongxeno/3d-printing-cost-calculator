@@ -2,6 +2,8 @@
 import { useCalculatorState } from './hooks/useCalculatorState';
 import { useCustomProfiles } from './hooks/useCustomProfiles';
 import { useSavedJobs } from './hooks/useSavedJobs';
+import { isCustomId } from './utils/profiles';
+import type { JobMaterial } from './utils/formulas';
 import { HardwareProfileCard } from './components/HardwareProfileCard';
 import { JobDetailsCard } from './components/JobDetailsCard';
 import { EconomicsCard } from './components/EconomicsCard';
@@ -11,8 +13,8 @@ import { ItemizedReceiptSidebar } from './components/ItemizedReceiptSidebar';
 import { Calculator, RotateCcw } from 'lucide-react';
 
 function App() {
-  const savedJobs = useSavedJobs();
   const profiles = useCustomProfiles();
+  const savedJobs = useSavedJobs(profiles.catalog);
   const {
     state,
     resetState,
@@ -27,6 +29,45 @@ function App() {
     removeMaintenancePart,
     computed
   } = useCalculatorState(profiles.catalog);
+
+  const catalog = profiles.catalog;
+
+  const printerValues = () => ({
+    purchase_price_thb: state.printerPrice,
+    estimated_lifespan_hours: state.printerLifespan,
+    base_power_draw_watts: state.basePowerDraw,
+    supports_multi_color: catalog.printers[state.printerId]?.supports_multi_color ?? false,
+    maintenance_components: state.maintenanceParts
+  });
+
+  const handleSaveCustomPrinter = (name: string) => {
+    const id = profiles.savePrinter(name, printerValues());
+    updateState({ printerId: id });
+  };
+
+  const handleUpdateCustomPrinter = () => {
+    const printer = catalog.printers[state.printerId];
+    if (!printer || !isCustomId(printer.id)) return;
+    profiles.savePrinter(printer.name, printerValues(), state.printerId);
+  };
+
+  const handleDeleteCustomPrinter = () => {
+    profiles.deletePrinter(state.printerId);
+    setPrinterId('bambu_x2d_combo');
+  };
+
+  const handleSaveCustomFilament = (mat: JobMaterial, name: string) => {
+    const id = profiles.saveFilament(name, {
+      price_per_kg_thb: mat.price_per_kg_thb,
+      power_draw_multiplier: mat.power_draw_multiplier,
+      hardware_wear_multiplier: mat.hardware_wear_multiplier
+    });
+    updateJobMaterial(mat.id, { filamentId: id });
+  };
+
+  const handleDeleteCustomFilament = (id: string) => {
+    profiles.deleteFilament(id);
+  };
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
@@ -55,9 +96,13 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column: Data Entry (8/12) */}
           <div className="lg:col-span-8 flex flex-col gap-6">
-            <HardwareProfileCard 
-              printerId={state.printerId} 
-              onChange={setPrinterId} 
+            <HardwareProfileCard
+              printerId={state.printerId}
+              onChange={setPrinterId}
+              printers={catalog.printers}
+              onSaveCustomPrinter={handleSaveCustomPrinter}
+              onUpdateCustomPrinter={handleUpdateCustomPrinter}
+              onDeleteCustomPrinter={handleDeleteCustomPrinter}
             />
             
             <JobDetailsCard
@@ -69,6 +114,9 @@ function App() {
               addJobMaterial={addJobMaterial}
               updateJobMaterial={updateJobMaterial}
               removeJobMaterial={removeJobMaterial}
+              filaments={catalog.filaments}
+              onSaveCustomFilament={handleSaveCustomFilament}
+              onDeleteCustomFilament={handleDeleteCustomFilament}
             />
 
             <EconomicsCard 
