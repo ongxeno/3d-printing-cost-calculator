@@ -1,3 +1,5 @@
+import { generateId } from '../utils/id';
+
 export interface FilamentPreset {
   id: string;
   name: string;
@@ -46,8 +48,6 @@ export const filamentPresets: Record<string, FilamentPreset> = {
   "mat_pla_cf": { id: "mat_pla_cf", name: "PLA-CF (Carbon Fiber)", price_per_kg_thb: 790, power_draw_multiplier: 1.01, hardware_wear_multiplier: 5.0 },
   "mat_petg_cf": { id: "mat_petg_cf", name: "PETG-CF (Carbon Fiber)", price_per_kg_thb: 880, power_draw_multiplier: 1.36, hardware_wear_multiplier: 5.0 }
 };
-
-const generateId = () => Math.random().toString(36).substr(2, 9);
 
 export const printerProfiles: Record<string, PrinterProfile> = {
   "bambu_h2c_combo": {

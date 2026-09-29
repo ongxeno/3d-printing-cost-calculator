@@ -1,5 +1,5 @@
 import React from 'react';
-import type { JobMaterial } from '../utils/formulas';
+import type { CalculatorState, JobMaterial } from '../utils/formulas';
 import { filamentPresets } from '../data/seedData';
 import { InputField } from './InputField';
 import { Clock, Plus, Trash2, Layers } from 'lucide-react';
@@ -8,7 +8,7 @@ interface JobDetailsCardProps {
   printTimeHours: number;
   printTimeMins: number;
   jobMaterials: JobMaterial[];
-  updateState: (updates: any) => void;
+  updateState: (updates: Partial<CalculatorState>) => void;
   addJobMaterial: () => void;
   updateJobMaterial: (id: string, updates: Partial<JobMaterial>) => void;
   removeJobMaterial: (id: string) => void;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { InputField } from './InputField';
 import type { MaintenanceComponent } from '../data/seedData';
+import type { CalculatorState } from '../utils/formulas';
 import { Settings, Plus, Trash2, Wrench } from 'lucide-react';
 
 interface AdvancedVariablesCardProps {
@@ -8,7 +9,7 @@ interface AdvancedVariablesCardProps {
   printerLifespan: number;
   effectiveDrawWatts: number;
   maintenanceParts: MaintenanceComponent[];
-  updateState: (updates: any) => void;
+  updateState: (updates: Partial<CalculatorState>) => void;
   addMaintenancePart: () => void;
   updateMaintenancePart: (id: string, updates: Partial<MaintenanceComponent>) => void;
   removeMaintenancePart: (id: string) => void;
