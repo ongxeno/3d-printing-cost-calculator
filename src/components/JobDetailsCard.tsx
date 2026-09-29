@@ -129,6 +129,14 @@ export const JobDetailsCard: React.FC<JobDetailsCardProps> = ({
                     onChange={(val) => updateJobMaterial(mat.id, { hardware_wear_multiplier: val })}
                   />
                 </div>
+                <div className="flex-1">
+                  <InputField
+                    label="Purge Waste"
+                    value={mat.waste_g}
+                    onChange={(val) => updateJobMaterial(mat.id, { waste_g: val })}
+                    suffix="g"
+                  />
+                </div>
               </div>
             </div>
           ))}
