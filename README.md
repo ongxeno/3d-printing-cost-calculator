@@ -33,3 +33,11 @@ This calculator takes the guesswork out of 3D printing economics and gives you a
 
 ---
 *Happy Printing! May your first layers always stick perfectly.* 🚀
+
+## 🧑‍💻 Development
+
+- `npm install` — install all dependencies
+- `npm run dev` — start the Vite dev server
+- `npm run lint` — run oxlint over the codebase
+- `npm test` — run the vitest unit tests
+- `npm run build` — type-check and build for production
