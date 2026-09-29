@@ -11,6 +11,8 @@ import {
 } from './savedJobs';
 import type { SavedJob } from './savedJobs';
 import { createDefaultState } from './persistence';
+import { seedProfiles } from './profiles';
+import type { ProfileSet } from './profiles';
 
 const now = new Date('2026-01-02T03:04:05.000Z');
 
@@ -191,17 +193,76 @@ describe('persistSavedJobs / loadSavedJobs', () => {
     expect(loadSavedJobs()).toEqual([]);
   });
 
-  it('drops an item with an invalid printerId but keeps a valid neighbour', () => {
+  it('keeps an item whose state.printerId is an unknown string on the default printer, preserving its numbers', () => {
     storage.store[SAVED_JOBS_KEY] = JSON.stringify({
       version: SAVED_JOBS_VERSION,
       jobs: [
-        { ...makeJob('bad'), state: { ...createDefaultState(), printerId: 'nope' } },
+        { ...makeJob('bad'), state: { ...createDefaultState(), printerId: 'nope', printerPrice: 12345 } },
+        makeJob('good', 'Good'),
+      ],
+    });
+    const result = loadSavedJobs();
+    expect(result).toHaveLength(2);
+    expect(result[0].id).toBe('bad');
+    expect(result[0].state.printerId).toBe('bambu_x2d_combo');
+    expect(result[0].state.printerPrice).toBe(12345);
+    expect(result[1].id).toBe('good');
+  });
+
+  it('still drops items whose state is not an object or whose printerId is not a string', () => {
+    storage.store[SAVED_JOBS_KEY] = JSON.stringify({
+      version: SAVED_JOBS_VERSION,
+      jobs: [
+        { ...makeJob('nostate'), state: 42 },
+        { ...makeJob('badtype'), state: { ...createDefaultState(), printerId: 42 } },
         makeJob('good', 'Good'),
       ],
     });
     const result = loadSavedJobs();
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe('good');
+  });
+
+  it('loads a job that references a custom printer when the catalog contains it', () => {
+    const catalog: ProfileSet = {
+      ...seedProfiles,
+      printers: {
+        ...seedProfiles.printers,
+        custom_p1: {
+          id: 'custom_p1',
+          name: 'Custom Printer 1',
+          purchase_price_thb: 11111,
+          estimated_lifespan_hours: 5000,
+          base_power_draw_watts: 300,
+          supports_multi_color: false,
+          maintenance_components: [],
+        },
+      },
+    };
+    storage.store[SAVED_JOBS_KEY] = JSON.stringify({
+      version: SAVED_JOBS_VERSION,
+      jobs: [{ ...makeJob('a'), state: { ...createDefaultState(), printerId: 'custom_p1' } }],
+    });
+    const result = loadSavedJobs(catalog);
+    expect(result).toHaveLength(1);
+    expect(result[0].state.printerId).toBe('custom_p1');
+  });
+
+  it('loads the same job with the default catalog on the default printer, numbers intact', () => {
+    storage.store[SAVED_JOBS_KEY] = JSON.stringify({
+      version: SAVED_JOBS_VERSION,
+      jobs: [
+        {
+          ...makeJob('a'),
+          state: { ...createDefaultState(), printerId: 'custom_p1', printerPrice: 99999, printerLifespan: 7777 },
+        },
+      ],
+    });
+    const result = loadSavedJobs();
+    expect(result).toHaveLength(1);
+    expect(result[0].state.printerId).toBe('bambu_x2d_combo');
+    expect(result[0].state.printerPrice).toBe(99999);
+    expect(result[0].state.printerLifespan).toBe(7777);
   });
 
   it('sanitizes a legacy-shaped state inside a saved job (negative laborRate becomes 150)', () => {

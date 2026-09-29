@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { CalculatorState } from '../utils/formulas';
+import { seedProfiles } from '../utils/profiles';
+import type { ProfileSet } from '../utils/profiles';
 import {
   loadSavedJobs,
   persistSavedJobs,
@@ -9,8 +11,8 @@ import {
   duplicateSavedJob,
 } from '../utils/savedJobs';
 
-export const useSavedJobs = () => {
-  const [jobs, setJobs] = useState(loadSavedJobs);
+export const useSavedJobs = (profiles: ProfileSet = seedProfiles) => {
+  const [jobs, setJobs] = useState(() => loadSavedJobs(profiles));
 
   useEffect(() => {
     persistSavedJobs(jobs);
