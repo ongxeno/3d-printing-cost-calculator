@@ -10,6 +10,7 @@ import {
   calculateBaseHardwareDepreciation,
   calculateComponentWear,
   calculateTotalComponentWear,
+  calculateSellingPrice,
 } from './formulas';
 import type { JobMaterial } from './formulas';
 import type { MaintenanceComponent } from '../data/seedData';
@@ -162,6 +163,16 @@ describe('calculateComponentWear', () => {
   it('computes periodic-only parts', () => {
     const periodicPart = { ...part, replacement_cost_thb: 0, replacement_lifespan_hours: 0 };
     expect(calculateComponentWear(periodicPart, 3, 1)).toBeCloseTo(6, 6);
+  });
+});
+
+describe('calculateSellingPrice', () => {
+  it('applies the markup on top of the cost', () => {
+    expect(calculateSellingPrice(100, 30)).toBeCloseTo(130, 6);
+  });
+
+  it('returns the cost unchanged at zero markup', () => {
+    expect(calculateSellingPrice(100, 0)).toBeCloseTo(100, 6);
   });
 });
 

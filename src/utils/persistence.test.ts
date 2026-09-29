@@ -51,6 +51,16 @@ describe('sanitizeState', () => {
     expect(result?.maintenanceParts[0].name).toBe('Component');
   });
 
+  it('handles a legacy state missing markupPercent', () => {
+    const { markupPercent: _markup, ...legacy } = createDefaultState();
+    expect(sanitizeState(legacy)?.markupPercent).toBe(30);
+  });
+
+  it('preserves a valid saved markupPercent and rejects negatives', () => {
+    expect(sanitizeState({ ...createDefaultState(), markupPercent: 45 })?.markupPercent).toBe(45);
+    expect(sanitizeState({ ...createDefaultState(), markupPercent: -5 })?.markupPercent).toBe(30);
+  });
+
   it('fills missing material multipliers from the filament preset', () => {
     const result = sanitizeState({
       ...createDefaultState(),

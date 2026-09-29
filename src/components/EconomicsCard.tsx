@@ -6,6 +6,7 @@ import { BadgeDollarSign, UserCog } from 'lucide-react';
 interface EconomicsCardProps {
   elecRate: number;
   laborRate: number;
+  markupPercent: number;
   prepTime: number;
   setupTime: number;
   postTime: number;
@@ -16,6 +17,7 @@ interface EconomicsCardProps {
 export const EconomicsCard: React.FC<EconomicsCardProps> = ({
   elecRate,
   laborRate,
+  markupPercent,
   prepTime,
   setupTime,
   postTime,
@@ -44,6 +46,13 @@ export const EconomicsCard: React.FC<EconomicsCardProps> = ({
             value={laborRate}
             onChange={(val) => updateState({ laborRate: val })}
             suffix="THB/hr"
+          />
+          <InputField
+            label="Profit Markup"
+            value={markupPercent}
+            onChange={(val) => updateState({ markupPercent: val })}
+            suffix="%"
+            max={1000}
           />
         </div>
       </div>
